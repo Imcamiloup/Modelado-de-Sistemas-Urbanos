@@ -66,7 +66,7 @@ El modelo propuesto está compuesto por un sistema de ecuaciones diferenciales o
 \subsection{Población}
 
 \[
-\frac{dP}{dt} = rP \left( 1 - \frac{P}{K(U)} \right) + I(t) + bP - dP
+\frac{dP}{dt} = rP \left( 1 - \frac{P}{K(H)} \right) + I(t) + bP - dP
 \]
 
 
@@ -74,13 +74,13 @@ El modelo propuesto está compuesto por un sistema de ecuaciones diferenciales o
 
 \begin{itemize}
     \item \( r \): Tasa de crecimiento poblacional, que representa el crecimiento natural de la población sin limitaciones por recursos.
-    \item \( K(U) \): Capacidad de carga, que depende de la huella urbana \( U \), es decir, cuánta población puede ser soportada en función del espacio y recursos disponibles.
+    \item \( K(H) \): Capacidad de carga, que depende de la huella urbana \( H \), es decir, cuánta población puede ser soportada en función del espacio y recursos disponibles.
     \item \( I(t) \): Tasa de inmigración neta, que depende del tiempo y puede variar debido a políticas migratorias u otros factores externos.
     \item \( bP \): Tasa de natalidad, que describe los nacimientos por persona en un período de tiempo determinado. En este modelo, corresponde a la variable \( B(t) \). 
     \item \( dP \): Tasa de mortalidad, que describe las muertes por persona en un período de tiempo determinado. En este modelo, corresponde a la variable \( M(t) \).
 \end{itemize}
 
-Este sistema de ecuaciones permite modelar el crecimiento poblacional teniendo en cuenta los efectos de la migración, los nacimientos, las muertes y las limitaciones impuestas por el espacio disponible (reflejado en \( K(U) \)).
+Este sistema de ecuaciones permite modelar el crecimiento poblacional teniendo en cuenta los efectos de la migración, los nacimientos, las muertes y las limitaciones impuestas por el espacio disponible (reflejado en \( K(H) \)).
 
 \subsection{Territorio}
 
@@ -726,6 +726,8 @@ Este dataset contiene los indicadores de cobertura de servicios básicos esencia
 
 
 
+
+
 Dichas variables serán utilizadas posteriormente en el ajuste y calibración del modelo mediante técnicas de optimización de parámetros.
 
 
@@ -804,11 +806,12 @@ $
 
 Para $
 (P(t)^*, I(t)^*) = \left( \frac{K - \sqrt{K^2 + \frac{4KI}{r}}}{2}, I^* \right) :
-$
+$$
 J = \begin{bmatrix}
 r\sqrt{1 + \frac{4I^*}{rK}} & 1 \\
 0 & 0
 \end{bmatrix}
+$
 
 
 los valores propios correspondientes son:
@@ -868,7 +871,7 @@ $$
 
 Esta expresión permite estimar la población en cualquier instante \( t \), considerando que las tasas \( b_{0} \), \( m_{0} \) e \( i_{0} \) se mantienen constantes a lo largo del tiempo.
 
-\subsection{Modelo Intuitivo de Territorio}
+\subsection{Modelo intuitivo de territorio}
 
 Retomando la simplificación del modelo, se plantean las siguientes ecuaciones diferenciales que representan la evolución de la huella urbana \( U(t) \) y el espacio ecológico disponible \( E(t) \):
 
@@ -933,9 +936,11 @@ Para el jacobiano tenemos que:
 $$
 J = 
 \begin{bmatrix}
-\frac{\partial}{\partial N}\left(\frac{dN}{dt}\right) & \frac{\partial}{\partial D}\left(\frac{dN}{dt}\right) \\[8pt]
-\frac{\partial}{\partial N}\left(\frac{dD}{dt}\right) & \frac{\partial}{\partial D}\left(\frac{dD}{dt}\right)
+\frac{\partial}{\partial U}\left(\frac{dU}{dt}\right) & \frac{\partial}{\partial E}\left(\frac{dU}{dt}\right) & \frac{\partial}{\partial P}\left(\frac{dU}{dt}\right) \\[6pt]
+\frac{\partial}{\partial U}\left(\frac{dE}{dt}\right) & \frac{\partial}{\partial E}\left(\frac{dE}{dt}\right) & \frac{\partial}{\partial P}\left(\frac{dE}{dt}\right) \\[6pt]
+\frac{\partial}{\partial U}\left(\frac{dP}{dt}\right) & \frac{\partial}{\partial E}\left(\frac{dP}{dt}\right) & \frac{\partial}{\partial P}\left(\frac{dP}{dt}\right)
 \end{bmatrix}
+ =
 \begin{bmatrix}
 0 & -\gamma & \bar{\alpha} \\[6pt]
 -\gamma & 0 & 0 \\[6pt]
@@ -1021,7 +1026,7 @@ Valores propios:
 $$
 \lambda_1 = 3\rho, \quad 
 \lambda_2 = \sqrt{\gamma^2 + \bar{\alpha}\gamma}, \quad 
-\lambda_3 = - \sqrt{\gamma^2 + \bar{\alpha}\gamma}
+\lambda_3 = -\sqrt{\gamma^2 + \bar{\alpha}\gamma}
 $$
 
 Vectores propios:
@@ -1065,7 +1070,7 @@ $$
 (U(t)^*, E(t)^*, P(t)^*) = (0, E(t)^*, k_2 E(t)^*) :
 $$
 $$
-\lambda_1 = 3 \rho, \quad \lambda_2 = \sqrt{\gamma^2 + \bar{\alpha} \gamma}, \quad \lambda_3 = - \sqrt{\gamma^2 + \bar{\alpha} \gamma}
+\lambda_1 = 3 \rho, \quad \lambda_2 = \sqrt{\gamma^2 + \bar{\alpha} \gamma}, \quad \lambda_3 = - \sqrt{\gamma^2 + \alpha \gamma}
 $$
 
 De manera análoga al punto anterior, en todas las combinaciones posibles de signos se obtienen o bien dos valores propios positivos y uno negativo, o bien dos valores negativos y uno positivo. Por tanto, este punto también es un \textbf{punto de silla}.
@@ -1186,18 +1191,20 @@ En la Sección 5.3.3, el bienestar urbano \(W(t)\) evoluciona según
 \[
 \frac{dW}{dt} \;=\; \alpha_W P(t) + \beta_W\big(U(t)+E(t)\big) + \gamma_W W(t) \;-\; \delta_W F(t),
 \]
-donde \(\alpha_W,\beta_W,\gamma_W,\delta_W\) cuantifican los efectos de cada variable sobre \(W(t)\).
+donde \(\alpha_W,\beta_W,\gamma_W,\delta_W\) cuantifican los efectos de población, infraestructura/estructura ecológica, cobertura de servicios básicos y desigualdad sobre \(W\).
 Para el componente poblacional, previamente se estableció
 \[
-\frac{dP}{dt} \;=\; rP\left(1-\frac{P}{K} \right)
+\frac{dP}{dt} \;=\; \rho\,P(t)\!\left(1-\frac{P(t)}{K(t)}\right), 
+\qquad
+K(t)=k_1 U(t)-k_2 E(t),
 \]
-donde \( r \) y \( K \) son parámetros de la dinámica poblacional.
-
+con \(\rho>0\) y una capacidad de carga modulada por \(U,E\)
+:contentReference[oaicite:2]{index=2}.
 A efectos de un retrato de fase 2D y consistente con la disponibilidad de datos promediados anuales, consideramos \(\bar U,\bar E,\bar F\) constantes (promedios/valores de referencia) y definimos \( \bar K = k_1\bar U - k_2\bar E>0 \). El subsistema queda:
 \begin{equation}
 \label{eq:subPW}
 \begin{cases}
-\displaystyle \frac{dP}{dt} \;=\; rP\left(1 - \frac{P}{\bar K}\right),\\[6pt]
+\displaystyle \frac{dP}{dt} \;=\; \rho\,P\!\left(1 - \frac{P}{\bar K}\right),\\[6pt]
 \displaystyle \frac{dW}{dt} \;=\; \gamma_W W \;+\; \underbrace{\big(\alpha_W P + \beta_W(\bar U+\bar E) - \delta_W \bar F\big)}_{=:A(P)}.
 \end{cases}
 \end{equation}
@@ -1254,7 +1261,7 @@ Dado que \(\dot P\) no depende de \(W\), las trayectorias tienen componente hori
 \paragraph{Lecturas de política y sensibilidad.}
 La posición de la recta \(\mathcal{N}_W\) y el valor de \(W^\star_1\) responden a:
 \[
-W^\star_1 \;=\; -\frac{1}{\gamma_W}\Big(\alpha_W P + \beta_W(\bar U+\bar E) - \delta_W \bar F\Big).
+W^\star_1 \;=\; -\frac{1}{\gamma_W}\Big(\alpha_W \bar K + \beta_W(\bar U+\bar E) - \delta_W \bar F\Big).
 \]
 \vspace{-0.25em}
 \begin{itemize}
@@ -1325,8 +1332,6 @@ function residuoLogistico(par, pop_obs, tiempo)
     tspan = (tiempo[1], tiempo[end])
     prob = ODEProblem(modeloLogistico, u0, tspan, par)
     sol = solve(prob, saveat=tiempo)
-
-    # Extraer la solución simulada para cada variable:
     pop_model = [sol(t)[1] for t in tiempo]
     res = pop_obs .- pop_model
     return norm(res)
@@ -1390,7 +1395,7 @@ begin
 end
 \end{minted}
 
-Al ejecutar este bloque de código, se resuelve la ecuación diferencial con los parámetros óptimos y se definen las funciones \( P(t) \) y \( dP_(t) \) para su uso posterior.
+En este punto, el modelo permite simular el crecimiento poblacional considerando tanto el crecimiento natural como los efectos de la migración a lo largo del tiempo.
 
 \subsubsection{Visualización del modelo ajustado}
 
@@ -1423,18 +1428,18 @@ end
 
 \subsubsection*{Función de error para la optimización}
 
-Implementamos la función para calcular el error (residuo) entre el modelo y los datos observados. Esta función calcula el residuo (error) al comparar la población, la vegetación y el entorno modelados con los datos observados.
+Implementamos la función para calcular el error (residuo) entre el modelo y los datos observados. Aquí definimos otra función genérica que calcula el error entre los valores modelados y observados:
 
 \begin{minted}[frame=single, fontsize=\small, bgcolor=gray!5, linenos]{julia}
-# Función que calcula el residuo (error) entre el modelo y los datos observados
+Función que calcula el residuo (error) entre el modelo y los datos observados
 function residuoPop(par, pop_obs, tiempo)
     P0 = pop_obs[1]
     u0 = [P0]
     tspan = (tiempo[1], tiempo[end])
     prob = ODEProblem(modeloPop, u0, tspan, par)
     sol = solve(prob, saveat=tiempo)
-
-    # Extraer la solución simulada para cada variable:
+    
+    # Extraemos la población modelada en cada instante de tiempo
     pop_model = [sol(t)[1] for t in tiempo]
     res = pop_obs .- pop_model
     return norm(res)
@@ -1443,9 +1448,777 @@ end
 
 \subsubsection*{Función de Optimización}
 
-Aquí se muestra la función de optimización que minimiza el error cuadrático medio (MSE) entre el bienestar urbano simulado y los datos observados. El proceso de optimización se realiza utilizando el algoritmo L-BFGS-B. A continuación, se muestra el bloque de código relevante para este proceso.
+Aquí se muestra la función de optimización que minimiza el error entre el modelo y los datos observados, utilizando un parámetro inicial:
 
 \begin{minted}[frame=single, fontsize=\small, bgcolor=gray!5, linenos]{julia}
+# Función a minimizar
+rPop(par) = residuoPop(par, poblacion, años)
+\end{minted}
+
+\subsubsection*{Ajuste de Parámetros}
+
+El ajuste de parámetros se realiza mediante una conjetura inicial para las tasas de natalidad, mortalidad e inmigración. El ajuste inicial en este caso es:
+
+\begin{minted}[frame=single, fontsize=\small, bgcolor=gray!5, linenos]{julia}
+par_inicial_22 = [0.0254, 0.0048, 0.0121]
+
+# Usamos una conjetura inicial para [b0, m0, i0].
+# Por ejemplo, dado que en 1980 se tenía:
+#   natalidad ≈ 0.0254, mortalidad ≈ 0.0048, migración ≈ 0.0121,
+#   podríamos iniciar con esos valores.
+\end{minted}
+
+
+Implementamos el proceso de optimización para ajustar los parámetros del modelo de crecimiento poblacional utilizando el algoritmo de Nelder-Mead.
+
+
+Se muestra el proceso de optimización utilizando el paquete `Optim` de Julia. Este proceso minimiza la función de residuo \(rPop\), que calcula el error entre el modelo y los datos observados, con los parámetros iniciales especificados.
+
+\begin{minted}[frame=single, fontsize=\small, bgcolor=gray!5, linenos]{julia}
+opt2 = Optim.optimize(rPop, par_inicial_22, NelderMead())
+
+par_est2 = [0.0176771, 0.0187112, 0.0205128]
+par_est2 = opt2.minimizer
+
+println("Parámetros estimados:")
+println("b0 = ", par_est2[1])
+println("m0 = ", par_est2[2])
+println("i0 = ", par_est2[3])
+\end{minted}
+
+\subsubsection{Resultados de la Optimización}
+
+El algoritmo de Nelder-Mead ha optimizado los parámetros del modelo de crecimiento poblacional, minimizando el error entre el modelo y los datos observados. Los valores obtenidos para los parámetros \(b_0\), \(m_0\) y \(i_0\) son los siguientes:
+\begin{minted}[frame=single, fontsize=\small, bgcolor=gray!5, linenos]{julia}
+Parámetros estimados:
+b0 = 0.0176771
+m0 = 0.0187112
+i0 = 0.0205128
+\end{minted}
+
+
+
+Estos valores se pueden utilizar para predecir el comportamiento futuro de la población bajo las condiciones actuales.
+
+
+
+\subsubsection{Resolución de la EDO con los parámetros estimados}
+
+El siguiente bloque de código muestra cómo resolver la ecuación diferencial con los parámetros óptimos obtenidos previamente.
+
+\begin{minted}[frame=single, fontsize=\small, bgcolor=gray!5, linenos]{julia}
+begin
+    # Resolver la ecuación diferencial con los parámetros óptimos
+    P0_2 = poblacion[1]
+    u0_2 = [P0]
+    tspan_2 = (años[1], años[end])
+    prob_2 = ODEProblem(modeloPop, u0_2, tspan_2, par_est2)
+    sol_2 = solve(prob_2, saveat=años)
+end
+\end{minted}
+
+
+
+\subsubsection{Visualización del modelo ajustado}
+
+\begin{figure}[H]
+    \centering
+\includegraphics[width=1\textwidth]{img10}
+    \caption{Diagrama de fase para modelo de población con ecuación cpmpensadora}
+    \label{fig:img10}
+\end{figure}
+
+\subsection{Modelo Intuitivo de Territorio}
+
+
+\subsubsection{Definición del modelo}
+
+El modelo considera varias variables, como la población \(U(t)\), el entorno \(E(t)\), la vegetación \(V(t)\), y la disponibilidad de recursos \(D(t)\). Los parámetros a estimar son \(a\), \( \beta \), \( \gamma \), \( \delta \), \( \kappa \), y \( \nu \). Las ecuaciones del modelo son las siguientes:
+
+\begin{minted}[frame=single, fontsize=\small, bgcolor=gray!5, linenos]{julia}
+# Modelo de territorio
+# Variables del sistema: U(t), E(t), V(t), D(t)
+# Parámetros a estimar: par = [a, β, γ, δ, κ, ν]
+# Ecuaciones:
+# dU/dt = a * P + β * V(t) - γ * E(t)
+# dE/dt = - δ * U(t)
+# dV/dt = (1 / κ) * dP
+# dD/dt = -ν * dU/dt
+
+function modeloTerritorio(u, par, t)
+    α, β, γ, δ, κ, ν = par
+    U, E, V, D = u
+    P = solP(t)
+    dP = dP(t)
+    dU = α * P + β * V - γ * E
+    dE = - δ * U
+    dV = (1 / κ) * dP
+    dD = - ν * dU/dt
+    return [dU, dE, dV, dD]
+end
+\end{minted}
+
+\subsubsection{Función de error para la optimización}
+
+Implementamos la función para calcular el error entre el modelo y los datos observados. La función calcula el residuo (error) al comparar la población, la vegetación y el entorno modelados con los datos observados.
+
+\begin{minted}[frame=single, fontsize=\small, bgcolor=gray!5, linenos]{julia}
+# Función que calcula el residuo (error) entre el modelo y los datos observados
+function residuoTerritorio(par)
+    # Condiciones iniciales tomadas de los datos (en t = t_data[1])
+    u0 = [U_obs[1], E_obs[1], V_obs[1], D_obs[1]]
+    
+    # Asegurarse de que tspan sea una tupla de dos elementos:
+    tspan = (t_data[1], t_data[end])
+    
+    # Crear el problema ODE, pasando 'par' como parámetros:
+    prob = ODEProblem(modeloTerritorio, u0, tspan, par)
+    sol = solve(prob, Tsit5(), saveat=t_data)
+    
+    # Extraer la solución simulada para cada variable:
+    U_sim = [sol[i][1] for i in 1:length(sol)]
+    E_sim = [sol[i][2] for i in 1:length(sol)]
+    V_sim = [sol[i][3] for i in 1:length(sol)]
+    D_sim = [sol[i][4] for i in 1:length(sol)]
+    
+    # Suma de errores cuadrados
+    error = sum((U_sim - U_obs).^2) + sum((E_sim - E_obs).^2) + sum((V_sim - V_obs).^2) + sum((D_sim - D_obs).^2)
+    
+    return error
+end
+\end{minted}
+
+En este análisis, se realizan las siguientes optimizaciones para los parámetros del modelo territorial. Utilizamos el algoritmo de Nelder-Mead para ajustar los parámetros de acuerdo con los datos observados.
+
+\subsection*{Valores Iniciales para los Parámetros}
+
+Los valores iniciales de los parámetros a estimar son los siguientes:
+
+\begin{minted}[frame=single, fontsize=\small, bgcolor=gray!5, linenos]{julia}
+par_inicial_3 = [0.001, 0.001, 0.001, 0.001, -1e-5, 2.0, 1.0]
+\end{minted}
+
+\subsubsection{Ajuste de Parametros}
+
+El siguiente código muestra cómo se realiza la optimización utilizando el paquete `Optim` en Julia:
+
+\begin{minted}[frame=single, fontsize=\small, bgcolor=gray!5, linenos]{julia}
+opt_result = Optim.optimize(residuoTerritorio, par_inicial_3, NelderMead())
+par_est = Optim.minimizer(opt_result)
+
+println(opt_result)
+println("Parámetros territoriales estimados:")
+println("α = ", par_est[1])
+println("β = ", par_est[2])
+println("γ = ", par_est[3])
+println("δ = ", par_est[4])
+println("κ = ", par_est[5])
+println("ν = ", par_est[6])
+\end{minted}
+
+\subsubsection{Resultados de la Optimización}
+
+
+La optimización de los parámetros del modelo territorial utilizando el algoritmo de Nelder-Mead ha sido exitosa. Los parámetros estimados son:
+
+\begin{minted}[frame=single, fontsize=\small, bgcolor=gray!5, linenos]{julia}
+# Resultado de la optimización
+Parámetros territoriales estimados:
+α = 0.0001
+β = 0.001283465874367774
+γ = 0.01874499942497856
+δ = -0.009437363488971295
+κ = 6.6751736645421817
+ν = 0.7130676382507437
+\end{minted}
+
+
+Estos parámetros se utilizarán para mejorar la precisión del modelo territorial y las proyecciones futuras.
+
+\subsubsection{Resolución de la EDO con los parámetros estimados}
+
+\begin{minted}[frame=single, fontsize=\small, bgcolor=gray!5, linenos]{julia}
+begin
+	u0 = [U_obs[1], E_obs[1], V_obs[1], D_obs[1]]
+	tspan = (t_data[1], t_data[end])  # Aseguramos que sea una tupla de 2 elementos
+	prob = ODEProblem((u, par, t) -> modeloTerritorio(u, par, t),
+	                   u0, tspan, par_est)
+	sol = solve(prob, Tsit5(), saveat=t_data)
+end
+\end{minted}
+
+\subsubsection{Visualización del modelo ajustado}
+
+\begin{figure}[H]
+    \centering
+\includegraphics[width=1\textwidth]{img11}
+    \caption{Huella Urbana: Datos VS Modelo}
+    \label{fig:img11}
+\end{figure}
+\begin{figure}[H]
+    \centering
+\includegraphics[width=1\textwidth]{img12}
+    \caption{Area Protegida: Datos VS Modelo}
+    \label{fig:img12}
+\end{figure}
+\begin{figure}[H]
+    \centering
+\includegraphics[width=1\textwidth]{img13}
+    \caption{Viviendas: Datos VS Modelo}
+    \label{fig:img13}
+\end{figure}
+\begin{figure}[H]
+    \centering
+\includegraphics[width=1\textwidth]{img14}
+    \caption{Area Disponible: Datos VS Modelo}
+    \label{fig:img14}
+\end{figure}
+
+Notemos que en el anterior modelo consideramos el componente de población aislado del modelo territorial, pues usamos la solución de la ecuación obtenida en el anterior componente. Veamos qué pasa si incorporamos el modelo de población al territorial
+
+\subsection{Modelo Población y Territorio}
+
+
+
+\subsubsection*{Definición del Modelo}
+
+El modelo de crecimiento territorial considera la interacción entre la población \(U(t)\), el entorno \(E(t)\), la vegetación \(V(t)\) y la disponibilidad de recursos \(D(t)\). Los parámetros que se estiman incluyen \(a\), \( \beta \), \( \gamma \), \( \delta \), \( \kappa \), y \( \nu \). Las ecuaciones del modelo son las siguientes:
+
+\[
+\frac{dP}{dt} = a \cdot P \cdot \left(1 - \frac{P}{K} \right)
+\]
+\[
+\frac{dE}{dt} = -\delta \cdot U
+\]
+\[
+\frac{dV}{dt} = \frac{1}{\kappa} \cdot dP
+\]
+\[
+\frac{dD}{dt} = -\nu \cdot \frac{dU}{dt}
+\]
+
+Donde:
+\begin{itemize}
+    \item \(P\): Población.
+    \item \(E\): Entorno.
+    \item \(V\): Vegetación.
+    \item \(D\): Disponibilidad de recursos.
+    \item \(a\), \( \beta \), \( \gamma \), \( \delta \), \( \kappa \), y \( \nu \): Parámetros que se deben estimar.
+\end{itemize}
+
+\subsubsection*{Función de Error para la Optimización}
+
+Para optimizar los parámetros del modelo, utilizamos una función que calcula el error entre los valores observados y los valores modelados. El error se mide como la suma de los errores cuadrados entre las observaciones y las soluciones del modelo para cada una de las variables \( P(t) \), \( E(t) \), \( V(t) \), y \( D(t) \).
+
+\begin{minted}[frame=single, fontsize=\small]{julia}
+function residuoCompleto(par_D)
+    tspan = (t_data[1], t_data[end])
+    prob = ODEProblem((u, par, t) -> modeloCompleto(u, par, t), u0_D, tspan, par_D)
+    sol = solve(prob, Tsit5(), saveat=t_data)
+    
+    P_sim = [sol[i][1] for i in 1:length(sol)]
+    U_sim = [sol[i][2] for i in 1:length(sol)]
+    E_sim = [sol[i][3] for i in 1:length(sol)]
+    V_sim = [sol[i][4] for i in 1:length(sol)]
+    D_sim = [sol[i][5] for i in 1:length(sol)]
+    
+    error = sum((P_sim - P_obs).^2) + sum((U_sim - U_obs).^2) + sum((E_sim - E_obs).^2) + sum((V_sim - V_obs).^2) + sum((D_sim - D_obs).^2)
+    
+    return error
+end
+\end{minted}
+
+\subsubsection*{Ajuste de Parámetros}
+
+Los parámetros iniciales son los siguientes:
+
+\begin{minted}[frame=single, fontsize=\small]{julia}
+par_inicial_D = [0.02, 1e7, 1e-5, 1e-5, 1e-5, 1e-5, 4.0, 1e-5]
+\end{minted}
+
+Aquí hemos asignado valores iniciales para los parámetros \(a\), \( \beta \), \( \gamma \), \( \delta \), \( \kappa \), \( \nu \) basándonos en estimaciones previas. Estos valores son aproximados y el proceso de optimización buscará ajustarlos para minimizar el error entre el modelo y los datos observados.
+
+\subsubsection*{Resultados de Optimización}
+
+Después de aplicar el algoritmo de optimización (en este caso, Nelder-Mead), los parámetros estimados son los siguientes:
+
+\begin{minted}[frame=single, fontsize=\small]{julia}
+opt_result = Optim.optimize(residuoTerritorio, par_inicial_3, NelderMead())
+par_est = Optim.minimizer(opt_result)
+
+println("Parámetros territoriales estimados:")
+println("α = ", par_est[1])
+println("β = ", par_est[2])
+println("γ = ", par_est[3])
+println("δ = ", par_est[4])
+println("κ = ", par_est[5])
+println("ν = ", par_est[6])
+\end{minted}
+
+\subsubsection*{Resolución de la EDO con los Parámetros Estimados}
+
+Una vez que hemos estimado los parámetros óptimos, se resuelve el sistema de ecuaciones diferenciales con los valores obtenidos:
+
+\begin{minted}[frame=single, fontsize=\small]{julia}
+begin
+    prob_D = ODEProblem((u, par, t) -> modeloCompleto(u, par, t), u0_D, tspan, par_est_D)
+    sol_D = solve(prob_D, Tsit5(), saveat=t_data)
+end
+\end{minted}
+
+\subsubsection*{Visualización del Modelo Ajustado}
+
+Para visualizar el comportamiento del modelo ajustado, graficamos las variables modeladas junto con los datos observados. Esta visualización nos permite comparar la evolución de la población, el entorno, la vegetación y la disponibilidad de recursos a lo largo del tiempo.
+
+\begin{figure}[H]
+    \centering
+\includegraphics[width=1\textwidth]{img15}
+    \caption{Huella Urbana 2: Datos VS Modelo}
+    \label{fig:img15}
+\end{figure}
+\begin{figure}[H]
+    \centering
+\includegraphics[width=1\textwidth]{img16}
+    \caption{Area Protegida 2: Datos VS Modelo}
+    \label{fig:img16}
+\end{figure}
+\begin{figure}[H]
+    \centering
+\includegraphics[width=1\textwidth]{img17}
+    \caption{Viviendas 2: Datos VS Modelo}
+    \label{fig:img17}
+\end{figure}
+\begin{figure}[H]
+    \centering
+\includegraphics[width=1\textwidth]{img18}
+    \caption{Area Disponible 2: Datos VS Modelo}
+    \label{fig:img18}
+\end{figure}
+
+ \subsection{Modelo SIR de territorio}
+ 
+ \subsubsection*{Definición del Modelo}
+
+ Como se mencionó anteriormente, dada la imposibilidad de encontrar datos para el suelo en desarrollo, se consideró la siguiente reescritura:
+
+\[
+\frac{dD}{dt} = -\frac{\alpha}{\gamma} D(t) \frac{dU}{dt}
+\]
+
+\[
+\frac{d^2U}{dt^2} = \left(\alpha D(t) - \gamma \right) \frac{dU}{dt}
+\]
+
+Donde:
+- \( D(t) \): Suelo en el tiempo \(t\).
+- \( U(t) \): Variable dependiente.
+- \( \alpha \), \( \gamma \): Parámetros del modelo.
+
+\begin{minted}[frame=single, fontsize=\small, bgcolor=gray!5, linenos]{julia}
+begin
+    function modelo!(u, p, t)
+        D, U, dudt = u
+        α, γ = p
+        dD = -α / γ * D * dudt # dD/dt
+        dU = dudt               # dU/dt
+        dUdT = (α * D - γ) * dudt # d^2U/dt^2
+        return [dD, dU, dUdT]
+    end
+end
+\end{minted}
+ 
+ \subsubsection*{Función de Error para la Optimización}
+
+A continuación se presenta la implementación de la función para resolver el modelo y calcular el error entre las predicciones del modelo y los datos observados. Esta función calcula el error cuadrático medio entre las predicciones y las observaciones.
+
+\begin{minted}[frame=single, fontsize=\small, bgcolor=gray!5, linenos]{julia}
+begin
+    # Función para resolver el modelo y calcular el error
+    function error_sir(params)
+        α, γ = params
+        du0 = (U_obs[2] - U_obs[1]) / (t_data[2] - t_data[1])  # Aproximación de dU/dt en t=0
+        u0 = [D_obs[1], U_obs[1], du0]
+        p = (α, γ)
+        tspan = (t_data[1], t_data[end])
+        prob = ODEProblem((u, par, t) -> modelo!(u, par, t), u0, tspan, p)
+
+        # Resolver el modelo en los puntos de tiempo de los datos
+        sol = solve(prob, saveat=t_data)
+        
+        # Extraer las predicciones del modelo
+        D_pred = [u[2] for u in sol.]  # Predicciones de D(t)
+        U_pred = [u[1] for u in sol.]  # Predicciones de U(t)
+        
+        # Calcular el error cuadrático medio
+        error_D = sum((D_pred .- D_obs).^2)  # Error en D(t)
+        error_U = sum((U_pred .- U_obs).^2)  # Error en U(t)
+        
+        # Error total (suma de errores cuadrados)
+        error_total = error_D + error_U
+
+        return error_total
+    end
+end
+\end{minted}
+ 
+ \subsubsection*{Ajuste de Parámetros}
+
+En este análisis, optimizamos los parámetros \( \alpha \) y \( \gamma \) utilizando el algoritmo de Nelder-Mead. Los parámetros iniciales, los límites inferiores y superiores son definidos antes de aplicar la optimización.
+
+\begin{minted}[frame=single, fontsize=\small, bgcolor=gray!5, linenos]{julia}
+begin
+    par_inicial_sir = [0.1, 0.05]  # [α, γ]
+    lower_bounds = [0.0, 0.0]      # Límites inferiores para α y γ
+    upper_bounds = [Inf, Inf]      # Límites superiores para α y γ
+
+    opt_result_sir = Optim.optimize(error_sir, par_inicial_sir, lower_bounds, upper_bounds, NelderMead())
+    par_est_sir = Optim.minimizer(opt_result_sir)
+
+    println(opt_result_sir)
+    println("Parámetros territoriales estimados:")
+    println("α = ", par_est_sir[1])
+    println("γ = ", par_est_sir[2])
+end
+\end{minted}
+ 
+ \subsubsection*{Resultados de Optimización}
+
+ Después de aplicar el algoritmo de optimización, los parámetros territoriales estimados son:
+
+\begin{minted}[frame=single, fontsize=\small, bgcolor=gray!5, linenos]{julia}
+# Resultado de la optimización
+Parámetros territoriales estimados:
+α = 2.72106331838308926e-01
+γ = 9.74556627934484e-01
+\end{minted}
+\subsubsection{Resolución de la EDO con los Parámetros Estimados}
+
+A continuación, se presenta la implementación de la función $sir\_estimado$ que resuelve el sistema territorial utilizando los parámetros optimizados:
+
+\begin{minted}[frame=single, fontsize=\small, bgcolor=gray!5, linenos]{julia}
+begin
+    # -----------------------------------------------
+    # Resolución del sistema territorial con parámetros estimados
+    # -----------------------------------------------
+    function sir_estimado(p)
+        dU = (U_obs[2] - U_obs[1]) / (t_data[2] - t_data[1])  # Aproximación de dU/dt en t=0
+        u0 = [D_obs[1], U_obs[1], dU]
+        p = (α, γ)
+        tspan = (t_data[1], t_data[end])
+        prob = ODEProblem(modelo!, u0, tspan, p)
+
+        # Resolver el modelo en los puntos de tiempo de los datos
+        sol = solve(prob, saveat=t_data)
+        
+        # Extraer las predicciones del modelo
+        D_pred = sol[1, :]  # Predicciones de D(t)
+        U_pred = sol[2, :]  # Predicciones de U(t)
+        
+        return D_pred, U_pred
+    end
+end
+\end{minted}
+
+\subsubsection*{Visualización del Modelo Ajustado}
+
+\begin{figure}[H]
+    \centering
+\includegraphics[width=1\textwidth]{img20}
+    \caption{Comparación: Datos Observados VS Simulación del modelo}
+    \label{fig:img20}
+\end{figure}
+
+No obstante, este enfoque presentó problemas a la hora de buscar los parámetros correctos. En particular, vemos como en la gráfica las curvas no ajustan bien para los datos observados. Los parámetros encontrados por el optimizador son:
+
+\[
+\alpha = 1.93 \cdot 10^{8}, \quad \gamma = 6.91 \cdot 10^{8}
+\]
+
+A pesar de los esfuerzos infructuosos por una búsqueda acertada por medio del optimizador, se halló la siguiente aproximación de forma manual. Aproximación mucho más acertada usando los parámetros:
+
+\[
+\alpha = 2 \cdot 10^{-7}, \quad \gamma = 0.0365
+\]
+
+
+\begin{figure}[H]
+    \centering
+\includegraphics[width=1\textwidth]{img21}
+    \caption{Comparación: Datos Observados VS Simulación del modelo}
+    \label{fig:img21}
+\end{figure}
+
+
+
+\subsection{Modelo de Bienestar Urbano}
+
+\subsubsection{Definición del modelo}
+
+La ecuación que describe la evolución del bienestar urbano \( W(t) \) es la siguiente:
+
+\begin{equation}
+\frac{dW}{dt} = \alpha_W P(t) + \beta_W U(t) + \theta_W E(t) + \gamma_W W(t) - \delta_W F(t)
+\end{equation}
+
+donde:
+\begin{itemize}
+    \item \( P(t) \) es la población de la ciudad en el tiempo \( t \),
+    \item \( U(t) \) es la huella urbana en el tiempo \( t \),
+    \item \( E(t) \) es la infraestructura ecológica (área protegida) en el tiempo \( t \),
+    \item \( W(t) \) es el bienestar urbano en el tiempo \( t \),
+    \item \( F(t) \) es el índice de desigualdad social en el tiempo \( t \),
+    \item \( \alpha_W \), \( \beta_W \), \( \theta_W \), \( \gamma_W \), \( \delta_W \) son los parámetros del modelo que representan las influencias de cada variable sobre \( W(t) \).
+\end{itemize}
+
+\subsubsection{Ajuste Preliminar con Mínimos Cuadrados Ordinarios (OLS)}
+
+
+
+El ajuste inicial se realizó utilizando el método de Mínimos Cuadrados Ordinarios (OLS). A continuación, se presenta un fragmento del código donde se realiza la estimación de los parámetros utilizando este método.
+
+\begin{minted}[frame=single, linenos, fontsize=\small]{python}
+import numpy as np
+
+def fit_ols(lambda_ridge=1e-6):
+    y = Wz_obs[1:] - Wz_obs[:-1]
+    X = np.column_stack([
+        Pz[:-1],
+        Uz[:-1],
+        Ez[:-1],
+        Wz_obs[:-1],
+        -Fz[:-1],  # signo negativo incorporado => coef = d
+        np.ones(len(y))  # intercepto c0
+    ])
+    XtX = X.T @ X
+    beta = np.linalg.solve(XtX + lambda_ridge * np.eye(X.shape[1]), X.T @ y)
+    a, bU, bE, c, d, c0 = beta
+    return a, bU, bE, c, d, c0
+
+a_ols, bU_ols, bE_ols, c_ols, d_ols, c0_ols = fit_ols()
+\end{minted}
+
+Este fragmento de código implementa el ajuste de parámetros mediante OLS, donde \( a \), \( b_U \), \( b_E \), \( c \), \( d \), y \( c_0 \) son los parámetros obtenidos a partir de la regresión lineal.
+
+\subsubsection{Refinamiento con Optimización L-BFGS-B}
+
+Una vez obtenidos los parámetros iniciales con OLS, se realiza el refinamiento de estos parámetros mediante optimización. El objetivo es minimizar el error cuadrático medio (MSE) entre el bienestar urbano simulado y los datos observados. El proceso de optimización se realiza utilizando el algoritmo L-BFGS-B. A continuación, se muestra el bloque de código relevante para este proceso.
+
+\begin{minted}[frame=single, linenos, fontsize=\small]{python}
+from scipy.optimize import minimize
+
+def objective(params):
+    Wz_sim = simulate_W(params)  # Simulación del bienestar urbano
+    W_sim = zunscale(Wz_sim, W_mu, W_sd)
+    return np.mean((W_sim - W_data)**2)
+
+# Parámetros iniciales de OLS
+initial = [a_ols, bU_ols, bE_ols, c_ols, max(0.0, d_ols), c0_ols]
+
+# Optimización L-BFGS-B
+bounds = [(-3, 3), (-3, 3), (-3, 3), (-2, 2), (0, 3), (-1, 1)]
+res = minimize(objective, initial, method='L-BFGS-B', bounds=bounds)
+
+params_best = res.x
+mse_opt = res.fun
+\end{minted}
+
+En este fragmento, la función `objective` calcula el MSE entre los datos observados y los datos simulados. El algoritmo de optimización L-BFGS-B se utiliza para ajustar los parámetros de manera que minimice el MSE.
+
+\subsubsection{Resultados de la optmización }
+
+El ajuste preliminar con el método OLS proporcionó los siguientes parámetros iniciales:
+
+Los parámetros óptimos obtenidos fueron:
+
+\begin{table}[h!]
+\centering
+\caption{Parámetros estimados del modelo de bienestar urbano.}
+\begin{tabular}{lcc}
+\hline
+Parámetro & Valor & Interpretación \\
+\hline
+$\alpha_W$ & $0.1421$ & Efecto de población sobre $W$ \\
+$\beta_W$ & $0.1078$ & Efecto de huella urbana sobre $W$ \\
+$\theta_W$ & $0.1295$ & Efecto de estructura ecológica sobre $W$ \\
+$\gamma_W$ & $0.0535$ & Autoregresión de $W$ (inercia) \\
+$\delta_W$ & $0.0217$ & Efecto negativo de desigualdad sobre $W$ \\
+$c_0$ & $0.0102$ & Intercepto (deriva residual) \\
+\hline
+\end{tabular}
+\end{table}
+
+
+
+El ajuste por optimización refinado con L-BFGS-B produjo los siguientes parámetros finales:
+
+\begin{equation}
+\text{Parámetros Finales: } \{\alpha_W: \, 0.14, \, \beta_W: \, 0.11, \, \theta_W: \, 0.13, \, \gamma_W: \, 0.05, \, \delta_W: \, 0.02, \, c_0: \, 0.01 \}
+\end{equation}
+
+Se observó una mejora en el ajuste, con un error cuadrático medio (MSE) menor tras el refinamiento.
+
+\subsubsection{Resolución de la EDO}
+
+Finalmente, se simuló la evolución del bienestar urbano utilizando los parámetros ajustados, y se compararon los resultados simulados con los datos observados. A continuación se presentan los gráficos que muestran la comparación entre el bienestar urbano real y el simulado:
+
+\begin{figure}[h!]
+\centering
+\includegraphics[width=0.8\textwidth]{proyeccion_bienestar_5anios.png}
+\caption{Comparación entre el bienestar urbano real y simulado.}
+\end{figure}
+
+La simulación muestra una buena concordancia entre los datos observados y los valores simulados, lo que valida la eficacia del modelo ajustado para representar la dinámica del bienestar urbano en Bogotá.
+
+\subsubsection{Método de Solución}
+
+Una vez estimados los parámetros, la ecuación diferencial ordinaria \eqref{eq:edo_bienestar_norm} queda completamente especificada. Sustituyendo los valores de la Tabla de parámetros estimados, el modelo en variables normalizadas es:
+
+\begin{equation}
+\frac{d\hat{W}}{dt} = 0.1421\,\hat{P}(t) + 0.1078\,\hat{U}(t) + 0.1295\,\hat{E}(t) + 0.0535\,\hat{W}(t) - 0.0217\,\hat{F}(t) + 0.0102.
+\label{eq:edo_bienestar_estimada}
+\end{equation}
+
+Para resolver \eqref{eq:edo_bienestar_estimada} se utiliza el método de Euler explícito con paso temporal $\Delta t = 1$ año, coherente con la periodicidad de los datos:
+
+\begin{equation}
+\hat{W}_{t+1} = \hat{W}_t + \Delta t \cdot \frac{d\hat{W}}{dt}\bigg|_{t},
+\end{equation}
+
+que expandido resulta en:
+
+\begin{multline}
+\hat{W}_{t+1} = \hat{W}_t + \big[0.1421\,\hat{P}_t + 0.1078\,\hat{U}_t + 0.1295\,\hat{E}_t \\
++ 0.0535\,\hat{W}_t - 0.0217\,\hat{F}_t + 0.0102\big].
+\label{eq:euler_estimado}
+\end{multline}
+
+\paragraph{Condición inicial.}
+La simulación parte del primer valor observado normalizado:
+\[
+\hat{W}_0 = \frac{W_{2012} - \mu_W}{\sigma_W} = \frac{99.1800 - 99.3502}{0.2302} = -0.7393,
+\]
+donde $\mu_W = 99.3502$ y $\sigma_W = 0.2302$ son los estadísticos calculados sobre el periodo histórico 2012--2024.
+
+\paragraph{Desnormalización.}
+Para cada paso de tiempo, el valor simulado en escala original se recupera mediante:
+\[
+W_t = \sigma_W\,\hat{W}_t + \mu_W = 0.2302\,\hat{W}_t + 99.3502.
+\]
+
+\paragraph{Algoritmo de simulación.}
+\begin{enumerate}
+    \item Normalizar las series de entrada: $\hat{P}_t, \hat{U}_t, \hat{E}_t, \hat{F}_t$ usando sus respectivos $\mu$ y $\sigma$ históricos.
+    \item Inicializar $\hat{W}_0$ como se indicó.
+    \item Para $t = 0, 1, \ldots, T-1$:
+    \begin{itemize}
+        \item Calcular $\hat{W}_{t+1}$ con \eqref{eq:euler_estimado}.
+    \end{itemize}
+    \item Desnormalizar cada $\hat{W}_t$ para obtener $W_t$.
+\end{enumerate}
+
+\paragraph{Comparación histórica.}
+La Figura~\ref{fig:ajuste_bienestar} (línea roja discontinua en el periodo 2012--2024) muestra el ajuste de la solución numérica de \eqref{eq:edo_bienestar_estimada} frente a los datos reales (línea azul con círculos). El error cuadrático medio obtenido es:
+\[
+\text{MSE} = \frac{1}{13}\sum_{t=2012}^{2024}\big(W_t^{\text{sim}} - W_t^{\text{obs}}\big)^2 = 1.08 \times 10^{-3},
+\]
+lo que indica un ajuste excelente.
+
+\paragraph{Proyección futura (2025--2029).}
+Para proyectar, se asume que las variables explicativas permanecen constantes en su último valor observado (2024):
+\[
+P_t = P_{2024} = 8004.0, \quad U_t = U_{2024} = 60500.0, \quad E_t = E_{2024} = 100.93, \quad F_t = F_{2024} = 0.5100,
+\]
+para $t \in \{2025, 2026, 2027, 2028, 2029\}$. Estas series se normalizan con los parámetros históricos y se continúa la iteración de \eqref{eq:euler_estimado}.
+
+La Figura~\ref{fig:proyeccion_bienestar} muestra la trayectoria completa (2012--2029), donde la línea vertical gris punteada separa el ajuste histórico de la proyección. Los valores proyectados se presentan en la Tabla de proyección.
+
+\paragraph{Forma explícita de la EDO en variables originales.}
+Desnormalizando \eqref{eq:edo_bienestar_estimada}, se obtiene la ecuación en las variables originales $W, P, U, E, F$:
+
+\begin{multline}
+\frac{dW}{dt} = \frac{\sigma_W}{1} \Bigg[ 0.1421\,\frac{P - \mu_P}{\sigma_P} + 0.1078\,\frac{U - \mu_U}{\sigma_U} + 0.1295\,\frac{E - \mu_E}{\sigma_E} \\
++ 0.0535\,\frac{W - \mu_W}{\sigma_W} - 0.0217\,\frac{F - \mu_F}{\sigma_F} + 0.0102 \Bigg].
+\label{eq:edo_bienestar_original}
+\end{multline}
+
+Sustituyendo los valores numéricos de los estadísticos:
+\[
+\begin{aligned}
+\mu_P &= 7525.31, \quad \sigma_P = 279.15, \\
+\mu_U &= 47757.62, \quad \sigma_U = 11527.99, \\
+\mu_E &= 97.71, \quad \sigma_E = 4.77, \\
+\mu_W &= 99.35, \quad \sigma_W = 0.23, \\
+\mu_F &= 0.5146, \quad \sigma_F = 0.0054,
+\end{aligned}
+\]
+
+se obtiene la ecuación calibrada lista para evaluación de escenarios futuros con distintos valores de $P, U, E, F$.
+
+\subsubsection{Interpretación}
+
+\begin{itemize}
+    \item El modelo captura adecuadamente la dinámica histórica del bienestar urbano (MSE = $1.08 \times 10^{-3}$).
+    \item Los parámetros $b_U > 0$ y $b_E > 0$ indican que tanto la expansión urbana como la preservación de estructura ecológica contribuyen positivamente al bienestar.
+    \item El término $d > 0$ confirma que la desigualdad social ($F$) reduce el bienestar, aunque con magnitud menor que los efectos demográficos y territoriales.
+    \item La proyección muestra una tendencia a la estabilización del bienestar en el rango 99.4--99.5 bajo el supuesto de que las variables explicativas permanecen constantes.
+    \item El parámetro $c \approx 0.05$ sugiere una ligera inercia positiva (\textit{momentum}) en el bienestar, pero no explosiva.
+\end{itemize}
+
+\subsubsection{Limitaciones y trabajo futuro}
+
+\begin{itemize}
+    \item La extrapolación asume que $P, U, E, F$ se mantienen constantes post-2024; escenarios alternativos (crecimiento demográfico, expansión urbana, políticas de reducción de desigualdad) modificarán la trayectoria proyectada.
+    \item El modelo discreto con paso anual no captura fluctuaciones intra-anuales.
+    \item Se recomienda validación cruzada con datos reservados (\textit{holdout}) o \textit{leave-one-out} para evaluar robustez predictiva.
+    \item Incorporar incertidumbre paramétrica mediante intervalos de confianza bootstrap o análisis de sensibilidad mejoraría la interpretación de las proyecciones.
+\end{itemize}
+
+
+
+\subsubsection{Carga de datos y selección de columnas}
+\begin{minted}{python}
+from pathlib import Path
+import pandas as pd
+import numpy as np
+
+PROJECT_ROOT = Path(__file__).resolve().parents[1]
+df = pd.read_excel(PROJECT_ROOT / "Data" / "Consolidado_Bienestar_Urbano.xlsx")
+
+def pick_col(d, candidates):
+    for c in candidates:
+        if c in d.columns:
+            return d[c].values.astype(float)
+    return None
+
+t_years = pick_col(df, ['Año','Anio','Year']).astype(int)
+P = pick_col(df, ['Poblacion','Población','P'])
+U = pick_col(df, ['Huella_Urbana','Huella Urbana','U','Area_Urbanizada','Área_Urbanizada'])
+E = pick_col(df, ['Infraestructura_Ecologica','Estructura_Ecologica','Area_Protegida','Áreas_Protegidas','E'])
+W = pick_col(df, ['Bienestar','W','Bienestar_Urbano'])
+F = pick_col(df, ['Desigualdad','Gini','Inequidad','F'])
+n = min(map(len,[t_years,P,U,E,W,F]))
+P,U,E,W,F,t_years = P[:n],U[:n],E[:n],W[:n],F[:n],t_years[:n]
+\end{minted}
+
+\subsubsection{Normalización (z-score)}
+\begin{minted}{python}
+eps = 1e-9
+def zfit(x):
+    x = np.asarray(x, float)
+    mu, sd = np.nanmean(x), np.nanstd(x) + eps
+    return (x - mu)/sd, mu, sd
+
+Pz, P_mu, P_sd = zfit(P)
+Uz, U_mu, U_sd = zfit(U)
+Ez, E_mu, E_sd = zfit(E)
+Wz, W_mu, W_sd = zfit(W)
+Fz, F_mu, F_sd = zfit(F)
+
+def zunscale(z, mu, sd): return z*sd + mu
+\end{minted}
+
+\subsubsection{Modelo y estimación (OLS + refinamiento)}
+\begin{minted}{python}
 from scipy.optimize import minimize
 
 # dWz/dt = a*Pz + bU*Uz + bE*Ez + c*Wz - d*Fz + c0  (dt=1)
@@ -1535,5 +2308,5 @@ W_ext  = Wz_ext*W_sd + W_mu
 
 
 
-
+ 
 
