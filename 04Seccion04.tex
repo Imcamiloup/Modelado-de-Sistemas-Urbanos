@@ -1,0 +1,48 @@
+\chapter{Metodologia y métodos de análisis}
+
+
+\section{Función compuesta de desigualdad F(t)}
+
+\subsection{Definición del indicador}
+Sea $t$ el año calendario. Definimos la función compuesta de desigualdad como una combinación lineal de tres componentes observables:
+\begin{equation}
+  F(t) \;=\; \alpha_{1}\,\frac{IPM_t}{100} \;+\; \alpha_{2}\,Gini_t \;+\; \alpha_{3}\,\frac{1}{IPC_t},
+  \label{eq:Ft}
+\end{equation}
+donde:
+\begin{itemize}
+  \item $IPM_t$: Índice de Pobreza Monetaria en $t$ (en puntos porcentuales).
+  \item $Gini_t$: coeficiente de Gini en $t$.
+  \item $IPC_t$: indicador monetario per cápita en $t$ (magnitud positiva).
+\end{itemize}
+La división $IPM_t/100$ normaliza la escala de $IPM$ al intervalo $[0,1]$; el término $1/IPC_t$ captura el efecto inverso de mayores niveles per cápita.
+
+\subsection{Datos}
+Se empleó la tabla \texttt{Indice\_total\_de\_pobreza.xlsx}, con variables $\{IPM_t, Gini_t, IPC_t\}$ para los años disponibles. Todos los campos se convirtieron a numéricos y se ordenaron temporalmente.
+
+\subsection{Criterio de estimación}
+Dados valores observados de una referencia empírica $F_{\text{real},t}$ (serie objetivo), los parámetros $\boldsymbol{\alpha}=(\alpha_1,\alpha_2,\alpha_3)$ se estiman por mínimos cuadrados no restringidos:
+\begin{equation}
+  \hat{\boldsymbol{\alpha}}
+  \;=\;
+  \arg\min_{\alpha_1,\alpha_2,\alpha_3}
+  \sum_{t} \Big( F_{\text{real},t} \;-\; \alpha_{1}\,\tfrac{IPM_t}{100} \;-\; \alpha_{2}\,Gini_t \;-\; \alpha_{3}\,\tfrac{1}{IPC_t} \Big)^{2}.
+  \label{eq:argmin}
+\end{equation}
+El problema (\ref{eq:argmin}) se resolvió con el método de Nelder–Mead a partir de una semilla $(0.5,\,0.3,\,0.2)$, sobre los datos limpios de la tabla.
+
+\subsection{Parámetros estimados}
+La optimización produjo los siguientes coeficientes:
+\begin{align*}
+  \hat{\alpha}_{1} &= 8.3725\times10^{-8},\\
+  \hat{\alpha}_{2} &= 1.0000008,\\
+  \hat{\alpha}_{3} &= -0.4916743.
+\end{align*}
+
+\subsection{Construcción final de la serie}
+Sustituyendo los coeficientes en (\ref{eq:Ft}), la serie compuesta se obtiene, para cada año $t$, como
+\begin{equation}
+  \widehat{F}(t) \;=\; \hat{\alpha}_{1}\,\frac{IPM_t}{100} \;+\; \hat{\alpha}_{2}\,Gini_t \;+\; \hat{\alpha}_{3}\,\frac{1}{IPC_t}.
+  \label{eq:Ft-final}
+\end{equation}
+Esta expresión define el cálculo operativo de $F(t)$ a partir de las variables disponibles.

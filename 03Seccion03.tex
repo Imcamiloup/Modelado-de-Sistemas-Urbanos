@@ -1,0 +1,1539 @@
+\chapter{Modelo Matemático}
+
+\section{Justificación del Modelo}
+El aumento de la complejidad en los sistemas urbanos demanda un análisis detallado de la dinámica que rige la interacción entre diversos componentes, estudiaremos y relacionaremos fenomenos como la población o la huella urbana. Un modelo matemático de ecuaciones diferenciales (EDOs) es una herramienta muy flexible, facil de implementar computacionalmente y con amplia capacidad para entender el desarrollo urbano sostenible, se presenta como una herramienta eficaz para capturar estas dinámicas y proyectar escenarios futuros en base a datos empíricos.
+
+El enfoque adoptado en este trabajo permite representar las interacciones entre población, territorio y bienestar social, factores cruciales en el contexto de las ciudades en expansión. A partir de datos históricos, el modelo propuesto se ajusta a la realidad de Bogotá, permitiendo hacer proyecciones a futuro y orientar políticas públicas de desarrollo urbano sostenible.
+
+\section{Definición de Variables}
+El modelo cuenta con cuatro componentes: poblacional, territorial, bienestar y estructura ecológica. Se presentarán algunas
+alternativas para modelar cada componente considerado.
+
+\subsection{Población}
+Para el componente de población se consideraron las siguientes variables:
+
+\begin{itemize}
+  \item $P(t)$: Población en el tiempo $t$: número de habitantes en el tiempo $t$.
+  \item $B(t)$: Tasa de natalidad en el tiempo $t$: proporción de nacimientos con respecto a la población en el tiempo $t$.
+  \item $M(t)$: Tasa de mortalidad en el tiempo $t$: proporción de muertes con respecto a la población en el tiempo $t$.
+  \item $I(t)$: Tasa de migración neta en el tiempo $t$: proporción de la migración neta (diferencia entre inmigraciones y emigraciones) con respecto a la población en el tiempo $t$.
+\end{itemize}
+
+\subsection{Territorio}
+Para el componente de territorio consideramos las siguientes variables:
+
+\begin{itemize}
+  \item $U(t)$: Huella urbana en el tiempo $t$: número de hectáreas (ha) urbanizadas en el tiempo $t$.
+  \item $E(t)$: Estructura ecológica en el tiempo $t$: número total de hectáreas de área protegida en el tiempo $t$ (parques, humedales, plazas, etc).
+  \item $V(t)$: Demanda de viviendas en el tiempo $t$: número de viviendas ocupadas en el tiempo $t$.
+  \item $D(t)$: Área disponible --no urbanizada--: número de hectáreas disponibles para urbanizar en el tiempo $t$.
+  \item $S(t)$: Suelo en desarrollo: número de hectáreas sobre las que se está expandiendo la ciudad en el tiempo $t$ (generalmente en las periferias de la ciudad).
+\end{itemize}
+
+\subsection{Bienestar Urbano}
+Las variables clave utilizadas para modelar el bienestar urbano son las siguientes:
+
+\begin{itemize}
+    \item \( W(t) \): Nivel de bienestar urbano en el tiempo \( t \), que refleja el acceso general a servicios básicos, infraestructura y la calidad de vida.
+    \item \( P(t) \): Población de la ciudad en el tiempo \( t \).
+    \item $U(t)$: Huella urbana en el tiempo $t$: número de hectáreas (ha) urbanizadas en el tiempo $t$.
+    \item $E(t)$: Estructura ecológica en el tiempo $t$: número total de hectáreas de área protegida en el tiempo $t$ (parques, humedales, plazas, etc).
+    \item \( C(t) \): Calidad de la vivienda en el tiempo \( t \), que afecta directamente la salud pública de los habitantes.
+    \item \( F(t) \): Desigualdad social, medida a través de indicadores de acceso a recursos y servicios entre diferentes segmentos de la población.
+\end{itemize}
+
+\subsection{Estructura Ecológica}
+
+La estructura ecológica de la ciudad se refiere a las áreas protegidas y los recursos naturales que contribuyen a la sostenibilidad ambiental y la calidad de vida. Para modelar este componente, se definen las siguientes variables:
+
+\begin{itemize}
+    \item \( E(t) \): Área total de zonas protegidas en el tiempo \( t \), incluyendo parques, humedales, reservas naturales, y espacios verdes urbanos.
+    \item \( N(t) \): Área total de ecosistemas naturales, como humedales y bosques urbanos, en el tiempo \( t \).
+    \item \( Z(t) \): Biodiversidad urbana en el tiempo \( t \), que depende de la cantidad y calidad de las áreas ecológicas presentes en la ciudad.
+    \item \( A(t) \): Calidad del aire en el tiempo \( t \), que se ve afectada positivamente por la presencia de áreas verdes y zonas protegidas.
+    \item \( H(t) \): Recursos hídricos disponibles, influenciados por la infraestructura verde (como humedales) que retiene el agua de lluvia y contribuye a la regulación hídrica de la ciudad.
+\end{itemize}
+
+
+
+
+
+
+
+\section{Sistema de Ecuaciones Diferenciales Ordinarias (EDOs)}
+El modelo propuesto está compuesto por un sistema de ecuaciones diferenciales ordinarias que describe la evolución de las variables previamente definidas. A continuación, se presentan las ecuaciones que constituyen este sistema:
+
+\subsection{Población}
+
+\[
+\frac{dP}{dt} = rP \left( 1 - \frac{P}{K(U)} \right) + I(t) + bP - dP
+\]
+
+
+\subsubsection{Descripción de los términos:}
+
+\begin{itemize}
+    \item \( r \): Tasa de crecimiento poblacional, que representa el crecimiento natural de la población sin limitaciones por recursos.
+    \item \( K(U) \): Capacidad de carga, que depende de la huella urbana \( U \), es decir, cuánta población puede ser soportada en función del espacio y recursos disponibles.
+    \item \( I(t) \): Tasa de inmigración neta, que depende del tiempo y puede variar debido a políticas migratorias u otros factores externos.
+    \item \( bP \): Tasa de natalidad, que describe los nacimientos por persona en un período de tiempo determinado. En este modelo, corresponde a la variable \( B(t) \). 
+    \item \( dP \): Tasa de mortalidad, que describe las muertes por persona en un período de tiempo determinado. En este modelo, corresponde a la variable \( M(t) \).
+\end{itemize}
+
+Este sistema de ecuaciones permite modelar el crecimiento poblacional teniendo en cuenta los efectos de la migración, los nacimientos, las muertes y las limitaciones impuestas por el espacio disponible (reflejado en \( K(U) \)).
+
+\subsection{Territorio}
+
+\subsubsection{Modelo Intuitivo}
+
+La expansión de la huella urbana es proporcional al crecimiento poblacional y a la demanda de viviendas, pero limitada por la estructura ecológica (área protegida):
+
+\[
+\frac{dU}{dt} = \alpha P(t) + \beta V(t) - \gamma E(t);
+\]
+
+la estructura ecológica disminuye debido a la expansión de la huella urbana:
+
+\[
+\frac{dE}{dt} = -\delta U(t);
+\]
+
+la demanda de viviendas, asumimos, depende del promedio de personas por hogar \( \kappa \):
+
+\[
+\frac{dV}{dt} = \frac{1}{\kappa} \frac{dP}{dt}
+\]
+
+y la superficie del suelo urbano disponible disminuirá proporcionalmente con la expansión de la huella urbana:
+
+\[
+\frac{dD}{dt} = -\nu \frac{dU}{dt}.
+\]
+
+Notemos que este sistema puede reducirse. En particular, en (4) es evidente que \( D(t) \) está completamente determinado por \( U(t) \) y no aporta información a la dinámica del sistema.
+
+Un proceso análogo sucede en (3), pues si se integra a ambos lados y se reemplaza en (1) obtenemos una nueva expresión para \( \frac{dU}{dt} \) que depende únicamente de \( P(t) \) y \( E(t) \). Y, al igual que antes, podría eliminarse a (3). En resumen, el sistema reducido es:
+
+\[
+\frac{dU}{dt} = \bar{\alpha} P(t) - \gamma E(t) + \bar{\beta}
+\]
+
+\[
+\frac{dE}{dt} = -\delta U(t)
+\]
+
+\[
+\frac{dP}{dt} = \rho P(t) \left( 1 - \frac{P(t)}{k_1 U(t) - k_2 E(t)} \right)
+\]
+
+
+
+\begin{itemize}
+\item \( \rho \) tasa de crecimiento intrínseco.
+\item \( k_1 U(t) + k_2 E(t) \) la capacidad de carga que se contribuye por \( U(t) \) y se limita por \( E(t) \).
+\item \( \bar{\alpha} = \alpha + \frac{\beta}{\kappa} \) y \( \bar{\beta} = \beta C_1 \) con \( C_1 \) una constante de integración.
+\end{itemize}
+
+
+donde:
+\begin{itemize}
+    \item \(\bar{\alpha}\): Coeficiente de expansión urbana relacionado con el crecimiento poblacional.
+\item \(\bar{\beta}\): Coeficiente de preservación ecológica relacionado con el área protegida \( E \).
+
+\subsubsection{Modelo SIR}
+
+Modelo basado en el modelo SIR (epidemiológico). Suponemos que es un sistema cerrado, esto es, \( D(t) + N(t) + U(t) = C \) para todo \( t \geq 0 \), donde \( C \) es el área total (en este caso de Bogotá).
+
+\[
+\frac{dD}{dt} = -\alpha D(t) N(t)
+\]
+
+\[
+\frac{dN}{dt} = \alpha D(t) N(t) - \gamma N(t)
+\]
+
+\[
+\frac{dU}{dt} = \gamma N(t)
+\]
+
+donde \( \alpha, \gamma > 0 \).
+
+No obstante, dado que \( U(t) \) no aparece en ninguna de las ecuaciones del sistema, vemos que esta puede determinarse a partir de \( N(t) \) y no aporta en nada a la dinámica del sistema. Por tanto, este puede reducirse a:
+
+\[
+\frac{dD}{dt} = -\alpha D(t) N(t)
+\]
+
+\[
+\frac{dN}{dt} = \alpha D(t) N(t) - \gamma N(t)
+\]
+
+Para este componente hay datos de una considerable cantidad de años (separados por intervalos de tiempo) para la huella urbana, área protegida y la demanda de viviendas. Del suelo en desarrollo no encontramos datos por lo que fue necesario replantear el modelo para que solo considere los compartimentos \( D \) y \( U \).
+
+\subsection{Bienestar Urbano}
+
+El bienestar urbano está determinado por una serie de factores interrelacionados, como el crecimiento poblacional, la expansión de la huella urbana, la calidad de los espacios naturales, la infraestructura urbana y el acceso a servicios básicos. Estos factores son cruciales para la calidad de vida de los habitantes de la ciudad. El modelo propuesto establece que el bienestar urbano \( W(t) \) cambia en función de estos factores, con énfasis en la cobertura de servicios básicos, la calidad de la vivienda, y la infraestructura verde.
+
+La ecuación que describe la evolución del bienestar urbano es la siguiente:
+
+\[
+\frac{dW}{dt} = \alpha_W P(t) + \beta_W U(t) + 
+\theta_W E(t)  + \gamma_W W(t) - \delta_W F(t)
+\]
+
+donde:
+\begin{itemize}
+    \item \( \alpha_W \) es el coeficiente que mide la influencia del crecimiento poblacional \( P(t) \) en el bienestar urbano. Un aumento en la población generalmente incrementa la demanda de servicios y recursos.
+    \item \( \beta_W \) es el coeficiente que describe el impacto positivo de la expansión de la infraestructura urbana \( U(t) \), las áreas ecológicas \( E(t) \), la calidad de la vivienda \( C(t) \).
+    \item \( \gamma_W \) es el coeficiente que refleja el  impacto de la cobertura de los servicios básicos (\( \text{CAC}(t) \), \( \text{CAL}(t) \), \( \text{CAPL}(t) \)) sobre el bienestar urbano, mejorando el acceso a servicios.
+    \item \( \delta_W \) es el coeficiente que refleja el impacto negativo de la desigualdad social \( F(t) \), sobre el bienestar urbano.
+\end{itemize}
+
+Este modelo establece que el bienestar urbano depende tanto del crecimiento de la población y la expansión de la infraestructura como del acceso a áreas verdes, la cobertura de los servicios básicos y la desigualdad social. La interacción entre estas variables es clave para entender cómo el bienestar urbano puede mejorar o deteriorarse con el tiempo.
+
+
+
+\subsubsection{Argumentación sobre el Uso de Datos Indirectos para Representar la Estructura Ecológica}
+
+Aunque no se cuentan con datos directos sobre la estructura ecológica, las variables de Área Verde por Habitante (\( \text{AVUpc}(t) \)) y Árboles por Habitante (\( \text{APH}(t) \)) proporcionan una representación adecuada de la infraestructura ecológica urbana en el modelo de bienestar urbano. Estas variables actúan como indicadores indirectos pero altamente representativos de la calidad y cantidad de los espacios naturales en el entorno urbano.
+
+El Área Verde por Habitante refleja el acceso de los ciudadanos a los espacios verdes y recreativos, que son fundamentales para la salud y el bienestar. A mayor área verde disponible por habitante, mayor es el acceso a áreas de esparcimiento y los beneficios ambientales, como la reducción de la contaminación y la mejora de la calidad del aire, lo que impacta directamente en el bienestar urbano.
+
+Por otro lado, el Número de Árboles por Habitante es un indicador de la densidad arbórea en el entorno urbano, lo cual tiene implicaciones directas en la calidad del aire, la reducción del calor urbano, y la mejora de la biodiversidad en la ciudad. Los árboles proporcionan múltiples beneficios ambientales y sociales, como la absorción de contaminantes atmosféricos, la reducción de la temperatura en áreas urbanas, y la creación de un ambiente más agradable para los habitantes.
+
+Estas variables, \( \text{AVUpc}(t) \) y \( \text{APH}(t) \), se combinan para representar la estructura ecológica \( E(t) \) de la ciudad, como se describe en la siguiente ecuación:
+
+\[
+E(t) = \text{APH}(t) + \text{AVUpc}(t)
+\]
+
+En el contexto de las ciudades modernas, donde el acceso a áreas naturales y espacios verdes es crucial, el uso de estos datos permite capturar de manera efectiva las dinámicas de sostenibilidad urbana.
+
+\subsubsection{Cálculo del Indicador SSB}
+
+El indicador \( SSB \) se calcula mediante la siguiente expresión matemática, que incluye la cobertura de los servicios básicos como el acueducto, alcantarillado sanitario y pluvial, reflejando el acceso a estos servicios esenciales:
+
+\[
+ W(t) = SSB(t) = \frac{7.3 \times \text{CAPL(t)} + 7.3 \times \text{CAL(t)} + 7.3 \times \text{CAC(t)}}{21.9}
+\]
+
+Las variables necesarias para calcular el indicador son:
+
+\begin{itemize}
+    \item \(\text{CAC}\) (Cobertura del Servicio de Acueducto): porcentaje de cobertura del servicio de acueducto residencial y legal.
+    \item \(\text{CAL}\) (Cobertura del Servicio de Alcantarillado Sanitario): porcentaje de cobertura del servicio de alcantarillado sanitario residencial y legal.
+    \item \(\text{CAPL}\) (Cobertura del Sistema de Alcantarillado Pluvial): porcentaje de cobertura del sistema de alcantarillado pluvial.
+\end{itemize}
+
+Este indicador es adimensional y permite evaluar la calidad de vida de los habitantes en función de su acceso a servicios esenciales, que son determinantes del bienestar urbano.
+
+\subsubsection{Cálculo de la Desigualdad Social: Fórmula para \( F(t) \)}
+
+Con el fin de modelar la variable \( F(t) \), que representa el nivel de pobreza o bienestar económico de Bogotá en el tiempo, se recopilaron datos anuales desde 2012 hasta 2024 correspondientes a los principales indicadores socioeconómicos reportados por el DANE. La tabla utilizada contiene las siguientes columnas:
+
+
+\begin{itemize}
+    \item Año: periodo de observación (2012--2024).
+    \item IPM (Índice de Pobreza Monetaria): Este índice refleja las privaciones sociales en términos monetarios, midiendo la proporción de la población que vive por debajo de la línea de pobreza monetaria. Un valor más alto de \( \text{IPM}(t) \) indica mayores privaciones y, por lo tanto, mayor desigualdad social.
+    \item Coeficiente de Gini (Gini): Este coeficiente mide la desigualdad en la distribución del ingreso en la población. Un valor cercano a 1 indica una mayor desigualdad en la distribución del ingreso, mientras que valores cercanos a 0 reflejan una distribución más equitativa.
+    \item Ingreso Per Cápita de la Unidad de Gasto (IPC): El ingreso per cápita ajustado por unidad de gasto refleja la disponibilidad de recursos de los hogares. A menor ingreso per cápita, mayor es la desigualdad social, ya que los hogares con ingresos más bajos enfrentan mayores dificultades económicas.
+\end{itemize}
+
+Con el propósito de hacer comparables los indicadores, cada variable se normalizó en el rango \([0,1]\) mediante la transformación Min--Max:
+
+\[
+x_i' = \frac{x_i - \min(x_i)}{\max(x_i) - \min(x_i)}
+\]
+
+y, en el caso del ingreso per cápita (\(IPC\)), se utilizó su inverso normalizado \(1 - x_i'\), pues un incremento en el ingreso disminuye la pobreza.
+
+Así, se obtuvieron tres variables adimensionales: \(IPM_n\), \(Gini_n\) e \(IPC_n\).
+
+\subsubsection{Primera aproximación teórica}
+
+Inicialmente, se propuso una formulación teórica ponderada de \( F(t) \) basada en la relevancia conceptual de cada indicador:
+
+\[
+F_{\text{teórico}}(t) = 0.5 \, IPM_n(t) + 0.3 \, Gini_n(t) + 0.2 \, IPC_n(t)
+\]
+
+donde los pesos se asignaron priorizando el nivel de pobreza monetaria y la desigualdad, con menor peso relativo al ingreso per cápita.
+
+\subsubsection{Estimación empírica de ponderaciones mediante PCA}
+
+Para refinar los pesos y ajustarlos a la estructura real de los datos, se aplicó un análisis de componentes principales (PCA) sobre las tres series normalizadas.  
+La primera componente principal explicó la mayor parte de la varianza conjunta y sus cargas se interpretaron como ponderaciones relativas entre los indicadores.  
+Se tomaron los valores absolutos de dichas cargas y se normalizaron para que su suma fuera igual a 1.
+
+Los pesos estimados empíricamente fueron:
+
+\[
+\begin{array}{lcl}
+w_{IPM} &=& 0.298 \\
+w_{Gini} &=& 0.442 \\
+w_{IPC} &=& 0.260
+\end{array}
+\]
+
+lo cual evidencia que la desigualdad (Gini) tiene la mayor contribución a la variabilidad del bienestar urbano, seguida por el índice de pobreza monetaria y el ingreso per cápita.
+
+\subsubsection{Función de pobreza ajustada}
+
+A partir de los resultados del PCA, la expresión final para \(F(t)\) se definió como:
+
+\[
+F(t) = 0.298 \, IPM_n(t) + 0.442 \, Gini_n(t) + 0.260 \, IPC_n(t)
+\]
+
+donde valores mayores de \(F(t)\) indican niveles más altos de pobreza o menor bienestar.
+
+La correlación entre el índice teórico inicial y el índice empírico estimado fue de aproximadamente \( r = 0.36 \), lo que sugiere una relación moderada y justifica la actualización de las ponderaciones en función de los datos observados.
+
+
+
+
+\subsection{Estructura Ecológica}
+
+El modelo de la estructura ecológica describe la evolución de las variables definidas en la sección anterior. A continuación se presentan las ecuaciones que constituyen este submodelo, que captura la dinámica de la expansión de las áreas protegidas, la biodiversidad y la calidad del aire.
+
+\subsubsection{Dinámica de las Áreas Ecológicas Protegidas}
+
+La tasa de cambio de las áreas ecológicas protegidas \( E(t) \) está influenciada por la expansión urbana y las políticas de conservación. La expansión urbana reduce las áreas ecológicas disponibles, mientras que las políticas de conservación aumentan la cantidad de áreas protegidas.
+
+\[
+\frac{dE}{dt} = -\delta U(t) + \alpha_C \cdot P(t) \cdot \left(1 - \frac{E(t)}{E_{\text{max}}}\right)
+\]
+
+donde:
+\begin{itemize}
+    \item \( \delta \): Tasa de disminución de áreas ecológicas debido a la expansión urbana.
+    \item \( U(t) \): Huella urbana en el tiempo \( t \), que determina la extensión de las áreas ocupadas por la urbanización.
+    \item \( \alpha_C \): Tasa de recuperación ecológica, que depende de las políticas de conservación y restauración (como la reforestación y la creación de nuevos parques).
+    \item \( P(t) \): Población urbana en el tiempo \( t \), que influye en la demanda de nuevos espacios urbanos y puede afectar la implementación de políticas de conservación.
+    \item \( E_{\text{max}} \): Capacidad máxima de áreas protegidas, definida por el límite ecológico de la ciudad.
+\end{itemize}
+
+\subsubsection{Dinámica de la Biodiversidad}
+
+La biodiversidad \( Z(t) \) depende de la cantidad y calidad de las áreas ecológicas disponibles. La biodiversidad aumenta con la expansión de áreas naturales y la mejora de la calidad del aire, mientras que disminuye debido a la contaminación.
+
+\[
+\frac{dZ}{dt} = \beta_Z \cdot \left( \frac{N(t)}{N_{\text{max}}} \right) - \gamma_Z \cdot \left( \frac{A(t)}{A_{\text{max}}} \right)
+\]
+
+donde:
+\begin{itemize}
+    \item \( \beta_Z \): Tasa de incremento de biodiversidad debido a la expansión de áreas ecológicas \( N(t) \).
+    \item \( N(t) \): Número de hectáreas de áreas naturales en el tiempo \( t \).
+    \item \( N_{\text{max}} \): Número máximo de hectáreas naturales sostenibles en la ciudad.
+    \item \( \gamma_Z \): Tasa de disminución de biodiversidad debido a la contaminación del aire.
+    \item \( A(t) \): Calidad del aire en el tiempo \( t \), que está directamente influenciada por las áreas ecológicas.
+    \item \( A_{\text{max}} \): Nivel máximo de calidad del aire alcanzable con las políticas de reducción de emisiones y ampliación de áreas ecológicas.
+\end{itemize}
+
+\subsubsection{Dinámica de los Recursos Hídricos}
+
+La disponibilidad de recursos hídricos \( H(t) \) está directamente relacionada con las áreas ecológicas que retienen el agua de lluvia. A medida que se incrementa la cantidad de áreas ecológicas, la capacidad de retención de agua también aumenta, mientras que la población urbana ejerce presión sobre estos recursos.
+
+\[
+\frac{dH}{dt} = \delta_H \cdot E(t) - \mu_H \cdot P(t)
+\]
+
+donde:
+\begin{itemize}
+    \item \( \delta_H \): Tasa de incremento de recursos hídricos gracias a la infraestructura verde (como humedales y jardines de lluvia).
+    \item \( \mu_H \): Tasa de consumo de recursos hídricos por parte de la población urbana.
+    \item \( P(t) \): Población urbana, que determina la demanda de agua.
+\end{itemize}
+
+\subsubsection{Conclusión}
+
+Este sistema de ecuaciones describe la dinámica de la estructura ecológica en la ciudad, teniendo en cuenta tanto la presión de la expansión urbana como los efectos de las políticas de conservación ecológica implementadas en la ciudad. A través de estas ecuaciones, se puede evaluar cómo la evolución de las áreas ecológicas, la biodiversidad y los recursos hídricos afectan la sostenibilidad urbana a lo largo del tiempo, permitiendo simular diferentes escenarios y proponer políticas adecuadas para la conservación y el desarrollo urbano sostenible.
+
+
+
+
+\section{Preparación para la implementación del modelo}
+
+La estimación de parámetros nos permite refinar la construcción de un modelo matemático realista. Dado que las ecuaciones del modelo propuesto dependen de varios parámetros que no pueden obtenerse directamente a partir de las ecuaciones mismas, es necesario ajustarlos a partir de datos empíricos. Esta sección describe el proceso utilizado para calibrar el modelo de manera que se ajuste lo mejor posible a los datos históricos de Bogotá.
+Se realizó una recopilación de datos de fuentes oficiales. A continuación describiremos el proceso realizado para cada componente.
+\subsection{Recopilación de datos}
+
+Para esta sección, para algunos datasets se tuvo que hacer limpieza e interpolación de datos. Por facilidad este proceso fue realizado usando Python, los notebooks de limpieza de datos se encuentran en el \href{https://github.com/Imcamiloup/Modelos-Matematicos-Works/tree/main/Modelos/proyecto/datos/procesamiento}{repositorio}.
+
+\subsubsection{Población}
+
+    Los datos de este componente fueron tomados de la plataforma DataCivilidad de la Sociedad de Ornato y mejoras de Bogotá [4], ahí cuentan con datos sobre la evolución demográfica de la ciudad de Bogotá. Recopilamos datos de población, tasa de natalidad, tasa de mortalidad y tasa de migración neta desde el año 1980 al año 2024. En general la información está muy completa para cada uno de los años considerados.
+
+        \begin{figure}[H]
+    \centering
+    % Imagen 1
+    \begin{minipage}{1\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img1.png}
+        \caption{Datos recopilados de población.}
+        \label{fig:img1}
+    \end{minipage}
+    \hfill
+    % Imagen 2
+    \begin{minipage}{1\textwidth}
+        \centering
+        \includegraphics[width=\textwidth]{img2.png}
+        \caption{Datos recopilados tasas de natalidad, mortalidad y migración.}
+        \label{fig:img2}
+    \end{minipage}
+\end{figure}
+
+
+\subsubsection{Territorio}
+
+Los datos de este componente fueron tomados de la plataforma DataCivilidad de la Sociedad de Ornato y Mejoras de Bogotá [4] y del IDOM del Estudio para Crecimiento y Evolución de la Huella Urbana para Bogotá [6]. Se recopilaron datos de huella urbana, área protegida, viviendas ocupadas y viviendas totales (ocupadas y desocupadas). En este caso si hubo algunas particularidades, las fuentes solo tenían datos para ciertos años, aproximadamente cada 6 años, es por esto que se hizo una interpolación usando splines cúbicos para obtener los datos faltantes.
+
+\begin{figure}[H]
+    \centering
+    % Imagen 1
+    \begin{minipage}{0.9\textwidth}
+        \centering
+        \includegraphics[width=1\textwidth]{img3}
+        \caption{Datos de Huella Urbana}
+        \label{fig:img3}
+    \end{minipage}
+    \hfill
+    % Imagen 2
+    \begin{minipage}{1\textwidth}
+        \centering
+        \includegraphics[width=0.9\textwidth]{img4}
+        \caption{Datos de area Protegida}
+        \label{fig:img4}
+    \end{minipage}
+\end{figure}
+
+
+    
+    \begin{itemize}
+        \item Viviendas:
+        Se contaban con datos a partir del año 2005. Para hallar los datos de años anteriores (1980-2004), se linealizaron los datos asumiendo un modelo exponencial y se hizo regresión lineal.
+    \end{itemize}
+    \begin{figure}[H]
+    \centering
+    \includegraphics[width=1\textwidth]{img5}
+    \caption{Datos de viviendas ocupadas}
+    \label{fig:img5}
+    \end{figure}
+\begin{figure}[]
+    \centering
+    \includegraphics[width=1\textwidth]{img6}
+    \caption{Datos de viviendas totales}
+    \label{fig:img6}
+\end{figure}
+
+
+\subsubsection{Bienestar Urbano}
+
+Se presentan los datos relacionados con bienestar urbano en Bogotá: Área Verde por Habitante y Árboles por Habitante.
+
+\begin{itemize}
+    \item \textbf{Área Verde por Habitante}
+
+    La primera gráfica muestra la evolución del Área Verde por Habitante en Bogotá. Esta variable representa la cantidad de metros cuadrados de áreas verdes urbanas disponibles por cada habitante.
+
+    \item \textbf{Árboles por Habitante}
+
+    La segunda gráfica ilustra la evolución del Número de Árboles por Habitante en Bogotá. Esta variable refleja la densidad arbórea en la ciudad.
+
+    El análisis de la gráfica muestra que el número de árboles por habitante en Bogotá ha fluctuado a lo largo de los años, dependiendo de la política de reforestación y la gestión del arbolado urbano. A medida que se incrementa esta cifra, se espera que se mejoren las condiciones ambientales y, por ende, el bienestar de los habitantes.
+
+    \begin{figure}[H]
+        \centering
+        \begin{minipage}{1\textwidth}
+            \centering
+            \includegraphics[width=0.9\textwidth]{Anio_vs_AVPH.png}
+            \caption{Área verde por habitante}
+            \label{fig:Area verde por habitante}
+        \end{minipage}
+        \hfill
+        \begin{minipage}{0.9\textwidth}
+            \centering
+            \includegraphics[width=1\textwidth]{Anio_vs_APH.png}
+            \caption{Datos de Árboles por habitante}
+            \label{fig:Arboles por habitante}
+        \end{minipage}
+        
+        
+    \end{figure}
+
+    
+
+    \item \textbf{Cobertura de Servicios Básicos}
+
+    Además de las variables relacionadas con el entorno natural, se han considerado datos sobre la cobertura de servicios básicos, los cuales son fundamentales para el bienestar urbano. Las siguientes variables serán utilizadas en el modelo:
+
+    \begin{itemize}
+        \item \textbf{CAC} (Cobertura del Servicio de Acueducto): Porcentaje de la población con acceso a agua potable.
+        \item \textbf{CAL} (Cobertura del Servicio de Alcantarillado Sanitario): Porcentaje de la población con acceso a alcantarillado sanitario.
+        \item \textbf{CAPL} (Cobertura del Sistema de Alcantarillado Pluvial): Porcentaje de la población con acceso a alcantarillado pluvial.
+    \end{itemize}
+
+    \begin{figure}[H]
+        \centering
+        \includegraphics[width=0.9\textwidth]{Anio_vs_CAC_CAL_CAPL.png}
+        \caption{Indicadores de cobertura de servicios del acueducto, alcantarillado sanitario y pluvial}
+        \label{fig:Indicadores de cobertura de servicios del acueducto, alcantarillado sanitario y pluvial}
+    \end{figure}
+
+    Estos datos de cobertura serán combinados en el cálculo del indicador SSB, que refleja el acceso general a servicios básicos y su impacto en el bienestar urbano.
+
+    \item \textbf{Desigualdad Social: IPM y Coeficiente de Gini}
+
+    Con el propósito de estimar la variable F(t), que representa la desigualdad social medida a través de indicadores de acceso a recursos y servicios entre diferentes segmentos de la población, se recopilaron y organizaron los datos provenientes de los indicadores socioeconómicos de Bogotá entre los años 2012 y 2024. La información se obtuvo del Índice total de pobreza y está compuesta por las siguientes variables:
+
+\begin{itemize}
+    \item \textbf{IPMo}: Índice de pobreza monetaria, el cual expresa el porcentaje de personas cuyos ingresos son insuficientes para adquirir una canasta básica de bienes y servicios. Valores más altos reflejan un mayor nivel de pobreza.
+    \item \textbf{Gini}: Coeficiente de Gini, indicador de desigualdad en la distribución del ingreso. Su valor oscila entre 0 (igualdad perfecta) y 1 (desigualdad total).
+    \item \textbf{IPC}: Índice de precios al consumidor, que mide la evolución del costo de vida y sirve como aproximación al poder adquisitivo de los hogares.
+\end{itemize}
+
+Cada una de estas variables fue normalizada en el intervalo [0,1] para permitir su comparación y posterior integración en un indicador compuesto. La normalización se realizó mediante la técnica de \textit{Min-Max Scaling}, que preserva la estructura temporal de los datos al escalar los valores de cada variable de forma proporcional a su rango histórico.
+
+El índice sintético F(t) se construyó como una combinación lineal ponderada de los tres indicadores normalizados:
+
+\[
+F(t) = 0.298 \cdot \text{IPMo}_{norm} + 0.442 \cdot \text{Gini}_{norm} + 0.260 \cdot \text{IPC}_{norm}
+\]
+
+donde los coeficientes representan el peso relativo de cada componente en la composición de la desigualdad social. Estas ponderaciones se ajustaron de acuerdo con la sensibilidad observada de cada variable frente a las fluctuaciones en los indicadores históricos de bienestar.
+
+\paragraph{}
+En la Figura \ref{fig:indicadores_normalizados} se presentan las tres variables socioeconómicas normalizadas a lo largo del periodo de estudio. Se observa una tendencia general de disminución en el IPMo y fluctuaciones moderadas en el coeficiente de Gini, acompañadas de un aumento sostenido del IPC.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.85\textwidth]{Indicadores_normalizados.png}
+    \caption{Evolución temporal de los indicadores normalizados de pobreza, desigualdad e inflación (2012–2024).}
+    \label{fig:indicadores_normalizados}
+\end{figure}
+
+La Figura \ref{fig:ft} muestra el comportamiento del índice compuesto F(t), donde se integran las tres variables previas. Este indicador permite capturar de manera agregada la variación del bienestar social urbano, al reflejar simultáneamente la pobreza monetaria, la desigualdad de ingresos y la pérdida de poder adquisitivo.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{F_t.png}
+    \caption{Evolución del indicador compuesto F(t) de desigualdad social.}
+    \label{fig:ft}
+\end{figure}
+
+
+Finalmente, en la Figura \ref{fig:ft} se presentan de forma conjunta los tres indicadores normalizados y el índice compuesto F(t), lo que permite visualizar su correspondencia temporal y la forma en que F(t) sintetiza el comportamiento global de las variables originales.
+
+\begin{figure}[H]
+    \centering
+    \includegraphics[width=0.75\textwidth]{Comparativa_F_t_y_componentes.png}
+    \caption{Evolución del indicador compuesto F(t) de desigualdad social.}
+    \label{fig:ft}
+\end{figure}
+
+
+
+
+La serie temporal de F(t) será empleada como insumo en la fase de modelado, donde se analizará su relación con las variables territoriales y ambientales del sistema urbano.
+
+
+\end{itemize}
+
+
+
+
+
+
+\subsection{Carga de datos en Julia}
+
+A continuación, se presenta la carga de los datos y la optimización de los parámetros del modelo. Para este propósito se utilizan los paquetes \texttt{DifferentialEquations}, \texttt{Optim}, \texttt{Plots}, \texttt{LinearAlgebra}, \texttt{CSV}, \texttt{DataFrames} e \texttt{Interpolations}.
+
+\begin{verbatim}
+using DifferentialEquations, Optim, Plots, LinearAlgebra, CSV,
+      DataFrames, Interpolations
+\end{verbatim}
+
+\subsubsection{Carga del dataset de Poblacion}
+
+\begin{table}[H]
+\centering
+\caption{Datos de población, natalidad, mortalidad y migración.}
+\begin{tabular}{cccccc}
+\hline
+\textbf{\#} & \textbf{Año} & \textbf{Población} & \textbf{Natalidad} & \textbf{Mortalidad} & \textbf{Migración} \\
+\hline
+1  & 1980 & 3753117 & 0.0254 & 0.0048 & 0.0121 \\
+2  & 1981 & 3876219 & 0.0215 & 0.0048 & 0.0115 \\
+3  & 1982 & 4000258 & 0.0246 & 0.0049 & 0.0113 \\
+4  & 1983 & 4125066 & 0.0242 & 0.0048 & 0.0109 \\
+5  & 1984 & 4250881 & 0.0238 & 0.0048 & 0.0103 \\
+6  & 1985 & 4376707 & 0.0234 & 0.0048 & 0.0101 \\
+7  & 1986 & 4503632 & 0.0230 & 0.0048 & 0.0099 \\
+8  & 1987 & 4629733 & 0.0226 & 0.0047 & 0.0093 \\
+9  & 1988 & 4755662 & 0.0223 & 0.0047 & 0.0089 \\
+10 & 1989 & 4882163 & 0.0220 & 0.0047 & 0.0086 \\
+\vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
+45 & 2024 & 7946067 & 0.0082 & 0.0060 & 0.0006 \\
+\hline
+\end{tabular}
+\end{table}
+
+\noindent
+En el código, la lectura del archivo se realiza mediante:
+
+\begin{verbatim}
+df_poblacion = CSV.read("./datos/datos_poblacion.csv", DataFrame)
+\end{verbatim}
+
+Posteriormente, se carga el conjunto de datos correspondiente al territorio.
+
+\subsubsection{Carga del dataset de territorio}
+
+Este dataset incluye variables como la huella urbana, el área protegida, el área disponible y la cantidad de viviendas ocupadas y totales, asociadas a la población en cada año.  
+
+\begin{verbatim}
+df_territorio = CSV.read("./datos/datos_territorio.csv", DataFrame)
+\end{verbatim}
+
+\begin{table}[H]
+\centering
+\caption{Datos históricos de territorio y vivienda.}
+\begin{tabular}{ccccccc}
+\hline
+\textbf{\#} & \textbf{Año} & \textbf{Población} & \textbf{Huella Urbana} &
+\textbf{Área protegida} & \textbf{Área disponible} &
+\textbf{Viviendas (ocupadas)} \\
+\hline
+1  & 1980 & 3753117 & 16532.9 & 300.00 & 1.47067e5 & 749933.0 \\
+2  & 1981 & 3876219 & 17369.8 & 322.94 & 1.46325e5 & 773682.0 \\
+3  & 1982 & 4000258 & 18206.7 & 345.89 & 1.45393e5 & 798184.0 \\
+4  & 1983 & 4125066 & 19043.5 & 368.83 & 1.44556e5 & 823461.0 \\
+5  & 1984 & 4250881 & 19880.4 & 391.78 & 1.43720e5 & 849539.0 \\
+6  & 1985 & 4376707 & 21210.0 & 414.72 & 1.42390e5 & 876443.0 \\
+7  & 1986 & 4503632 & 21498.6 & 532.92 & 1.42101e5 & 904198.0 \\
+8  & 1987 & 4629733 & 22073.1 & 701.58 & 1.41527e5 & 932833.0 \\
+9  & 1988 & 4755662 & 22878.1 & 909.97 & 1.40722e5 & 962374.0 \\
+10 & 1989 & 4882163 & 23858.0 & 1147.46 & 1.39742e5 & 992851.0 \\
+\vdots & \vdots & \vdots & \vdots & \vdots & \vdots & \vdots \\
+45 & 2024 & 7946067 & 39563.6 & 3949.21 & 1.24036e5 & 2.89455e6 \\
+\hline
+\end{tabular}
+\end{table}
+
+\noindent
+El dataset también incluye el número total de viviendas registradas, que en el año 2024 alcanza un valor de aproximadamente 3.04 millones. Este conjunto de información permite analizar la evolución del territorio en relación con el crecimiento poblacional, la expansión de la huella urbana y la presión sobre los recursos disponibles. 
+
+\subsection{Carga de Datos en Python}
+
+A continuación, se presenta la carga de los datos y la optimización de los parámetros del modelo. Para este propósito se utilizan las bibliotecas \texttt{pandas}, \texttt{numpy}, \texttt{matplotlib}, \texttt{scipy}, \texttt{seaborn} y \texttt{csv}.
+
+\begin{verbatim}
+import pandas as pd
+import numpy as np
+import matplotlib.pyplot as plt
+import seaborn as sns
+from scipy import stats
+\end{verbatim}
+
+\subsubsection{Carga del dataset de Estructura Ecológica}
+
+Este dataset contiene variables clave relacionadas con la estructura ecológica de Bogotá, como el Área Verde por Habitante (AVPH) y el Número de Árboles por Habitante (APH), que son fundamentales para entender la infraestructura verde de la ciudad.
+
+\begin{table}[H]
+\centering
+\caption{Datos de Estructura Ecológica (Área Verde por Habitante y Árboles por Habitante).}
+\begin{tabular}{|c|c|c|c|}
+\hline
+\textbf{Año} & \textbf{Área Verde por Habitante (AVPH) (m²)} & \textbf{Árboles por Habitante (APH)} \\
+\hline
+2015 & 13.54 & N/A \\
+2017 & 15.24 & N/A \\
+2018 & 15.21 & 0.172 \\
+2019 & 13.68 & 0.171 \\
+2020 & 12.87 & 0.171 \\
+\hline
+\end{tabular}
+\end{table}
+
+\noindent
+En Python, la lectura del archivo se realiza mediante:
+
+\begin{verbatim}
+df_estructura_ecologica = pd.read_csv('./datos/estructura_ecologica.csv')
+\end{verbatim}
+
+\subsubsection{Carga del dataset de Índice de Pobreza Multidimensional (IPM) y Coeficiente de Gini}
+
+El Índice de Pobreza Multidimensional (IPM) y el Coeficiente de Gini se utilizan para modelar la desigualdad social en Bogotá. Estos indicadores reflejan las dimensiones de la desigualdad social y son cruciales para entender cómo las privaciones sociales impactan en el bienestar de la población. A continuación, se presentan los datos correspondientes:
+
+\begin{table}[H]
+\centering
+\caption{Índice de Pobreza Multidimensional (IPM) y Coeficiente de Gini en Bogotá.}
+\begin{tabular}{|c|c|c|}
+\hline
+\textbf{Año} & \textbf{IPM (\%)} & \textbf{Coeficiente de Gini} \\
+\hline
+2012 & 23.9 & 0.489 \\
+2013 & 21.0 & 0.492 \\
+2014 & 20.6 & 0.492 \\
+2015 & 21.1 & 0.486 \\
+2016 & 21.3 & 0.485 \\
+2017 & 20.5 & 0.480 \\
+2018 & 19.7 & 0.480 \\
+2019 & 18.3 & 0.475 \\
+2020 & 19.5 & 0.470 \\
+2021 & 20.1 & 0.475 \\
+2022 & 21.5 & 0.480 \\
+2023 & 21.2 & 0.485 \\
+2024 & 20.8 & 0.485 \\
+\hline
+\end{tabular}
+\end{table}
+
+\noindent
+En Python, la lectura del archivo se realiza mediante:
+
+\begin{verbatim}
+df_pobreza = pd.read_csv('./datos/indice_de_pobreza.csv')
+\end{verbatim}
+
+\subsubsection{Carga del dataset de Cobertura de Servicios Básicos (SSB)}
+
+Este dataset contiene los indicadores de cobertura de servicios básicos esenciales para el bienestar urbano. Los datos incluyen el acueducto (CAC), el alcantarillado sanitario (CAL), y el alcantarillado pluvial (CAPL).
+
+\begin{table}[H]
+\centering
+\caption{Cobertura de Servicios Básicos: Acueducto, Alcantarillado Sanitario y Pluvial.}
+\begin{tabular}{|c|c|c|c|c|}
+\hline
+\textbf{Año} & \textbf{CAC (\%)} & \textbf{CAL (\%)} & \textbf{CAPL (\%)} & \textbf{Valor SSB} \\
+\hline
+2008 & 99.73 & 99.11 & 97.81 & 98.89 \\
+2009 & 99.69 & 98.98 & 99.18 & 99.28 \\
+2010 & 99.93 & 99.19 & 99.40 & 99.51 \\
+2011 & 99.94 & 99.23 & 98.62 & 99.26 \\
+2012 & 99.92 & 99.20 & 98.43 & 99.18 \\
+2013 & 99.91 & 99.19 & 98.47 & 99.19 \\
+2014 & 99.92 & 99.18 & 98.40 & 99.17 \\
+\hline
+\end{tabular}
+\end{table}
+
+\
+
+
+
+
+
+Dichas variables serán utilizadas posteriormente en el ajuste y calibración del modelo mediante técnicas de optimización de parámetros.
+
+
+\section{Analisis de diagramas de fase}
+
+\subsection{Modelo Logistico de Población}
+    
+Consideraremos el modelo logístico con población:
+
+
+$$\frac{dP}{dt} = rP(t) \left( 1 - \frac{P(t)}{K} \right) + I(t)$$
+$$\frac{dI}{dt} = f(t)$$
+donde \( r \) es la tasa de crecimiento y \( K \) la capacidad de carga.
+
+Para realizar un análisis de los diagramas de fase es necesario obtener una ecuación para la derivada de \( I(t) \). En este caso, usando los datos observados para la migración, haremos una aproximación a esta usando interpolación lineal. No obstante, por el momento la denotaremos mediante la expresión $\frac{dI}{dt} = f(t)$.
+
+
+\subsubsection{Puntos Fijos}
+En este caso no tiene sentido asumir que \( I(t) = 0 \), dada que la migración en el territorio no es nula. Por tanto, debemos usar la fórmula cuadrática para obtener los puntos fijos en función de \( I \):
+
+$$
+\frac{dI}{dt} = 0, \quad I(t) \neq 0
+$$
+
+$$
+P(t) = \frac{K \pm \sqrt{K^2 + \frac{4KI}{r}}}{2}
+$$
+
+\subsubsection{Jacobiano}
+Para el jacobiano tenemos que:
+
+$$
+J = \begin{bmatrix}
+\frac{\partial}{\partial P} \left( \frac{dP}{dt} \right) & \frac{\partial}{\partial I} \left( \frac{dP}{dt} \right) \\
+\frac{\partial}{\partial P} \left( \frac{dI}{dt} \right) & \frac{\partial}{\partial I} \left( \frac{dI}{dt} \right)
+\end{bmatrix}
+= \begin{bmatrix}
+r \left(1 - \frac{2P(t)}{K} \right) & 1 \\
+0 & 0
+\end{bmatrix} = \begin{bmatrix}
+r\sqrt{1 + \frac{4I^*}{rK}} & 1 \\
+0 & 0
+\end{bmatrix}
+$$
+\subsubsection{Valores y vectores propios}
+
+Se debe evaluar el jacobiano en los puntos fijos para posteriormente sacar los valores y vectores propios.
+
+Para
+$
+(P(t)^*, I(t)^*) = \left( \frac{K + \sqrt{K^2 + \frac{4KI}{r}}}{2}, I^* \right) :
+$
+$
+J = \begin{bmatrix}
+r\sqrt{1 + \frac{4I^*}{rK}} & 1 \\
+0 & 0
+\end{bmatrix}
+$
+
+los valores propios correspondientes son:
+$
+\lambda_1 = 0, \quad \lambda_2 = r \sqrt{1 + \frac{4I^*}{rK}}
+$
+y los vectores propios son:
+$
+\vec{v}_1 = \begin{pmatrix} 
+1 \\
+-r\sqrt{1 + \frac{4I^*}{rK}} 
+\end{pmatrix}
+, \quad
+\vec{v}_2 = \begin{pmatrix} 
+1 \\
+0 
+\end{pmatrix}
+$
+
+Para $
+(P(t)^*, I(t)^*) = \left( \frac{K - \sqrt{K^2 + \frac{4KI}{r}}}{2}, I^* \right) :
+$
+J = \begin{bmatrix}
+r\sqrt{1 + \frac{4I^*}{rK}} & 1 \\
+0 & 0
+\end{bmatrix}
+
+
+los valores propios correspondientes son:
+$
+\lambda_1 = 0, \quad \lambda_2 = -r \sqrt{1 + \frac{4I^*}{rK}}
+$
+y los vectores propios son:
+$
+\vec{v}_1 = \begin{pmatrix} 
+1 \\
+r\sqrt{1 + \frac{4I^*}{rK}} 
+\end{pmatrix}
+, \quad
+\vec{v}_2 = \begin{pmatrix} 
+1 \\
+0 
+\end{pmatrix}
+$
+
+\subsubsection{Analisis}
+
+Dado que uno de los valores propios es cero, no hay equilibrios aislados.
+
+Usando los parámetros estimados en la sección siguiente, una aproximación numérica de la derivada $\frac{dI}{dt}$ y apoyándonos en las librerías de Julia, podemos hacer una pequeña visualización de este diagrama de fase.
+
+\begin{figure}[H]
+    \centering
+\includegraphics[width=1\textwidth]{img7}
+    \caption{Diagrama de población logistico}
+    \label{fig:img7}
+\end{figure}
+
+\subsection{Modelo de población con ecuación compensadora}
+
+
+Consideramos el siguiente modelo diferencial para representar la evolución de la población en función del tiempo:
+
+$$
+    \frac{dP}{dt} = B(t) - M(t) + I(t),
+$$
+
+donde:
+
+$$
+    B(t) = b_{0}P(t), \quad
+    M(t) = m_{0}P(t), \quad
+    I(t) = i_{0}P(t).
+$$
+
+El término \( B(t) \) representa la tasa de natalidad, \( M(t) \) la tasa de mortalidad y \( I(t) \) la tasa de migración neta, todas proporcionales a la población actual \( P(t) \).
+
+Para este caso en particular, la solución analítica del modelo es:
+
+$$
+    P(t) = P(0) \cdot e^{(b_{0} - m_{0} + i_{0})t}.
+$$
+
+Esta expresión permite estimar la población en cualquier instante \( t \), considerando que las tasas \( b_{0} \), \( m_{0} \) e \( i_{0} \) se mantienen constantes a lo largo del tiempo.
+
+\subsection{Modelo Intuitivo de Territorio}
+
+Retomando la simplificación del modelo, se plantean las siguientes ecuaciones diferenciales que representan la evolución de la huella urbana \( U(t) \) y el espacio ecológico disponible \( E(t) \):
+
+$$
+    \frac{dU}{dt} = \bar{\alpha} P(t) - \gamma E(t) + \bar{\beta}
+$$
+
+$$
+    \frac{dE}{dt} = -\delta U(t)
+$$
+
+donde los parámetros \(\bar{\alpha}\) y \(\bar{\beta}\) están definidos como
+$
+    \bar{\alpha} = \alpha + \frac{\beta}{\kappa}, \quad 
+    \bar{\beta} = \beta C_1,
+$
+con \( C_1 \) una constante de integración.
+
+El crecimiento poblacional se modela mediante una ecuación logística modificada que incorpora la influencia del territorio y el entorno ecológico:
+
+$$
+    \frac{dP}{dt} = \rho P(t) \left( 1 - \frac{P(t)}{k_1 U(t) - k_2 E(t)} \right),
+$$
+
+donde:
+\begin{itemize}
+    \item \( \rho \) es la tasa de crecimiento intrínseco de la población.
+    \item \( k_1 U(t) + k_2 E(t) \) representa la capacidad de carga efectiva, dependiente de la huella urbana \( U(t) \) y del entorno ecológico \( E(t) \).
+\end{itemize}
+
+De este modo, la expansión urbana \( U(t) \) contribuye positivamente al crecimiento poblacional, mientras que la reducción del entorno ecológico \( E(t) \) lo limita.  
+
+A continuación, se extraen los datos observados para las variables territoriales con el fin de calibrar y validar el modelo propuesto.
+
+\subsubsection{Puntos Fijos}
+Al igualar a cero obtenemos las siguientes condiciones de equilibrio (puntos fijos):
+
+\begin{itemize}
+    \item Si $P(t) = 0$:
+    $$
+    \begin{aligned}
+    U(t) &= 0, \\
+    P(t) &= 0, \\
+    E(t) &= \frac{\bar{\beta}}{\gamma}.
+    \end{aligned}
+    $$
+
+    \item Si $P(t) \neq 0$:
+    $$
+    \begin{aligned}
+    U(t) &= 0, \\
+    P(t) &= k_2 E(t) = \frac{k_2 \bar{\beta}}{k_2 \bar{\alpha} + \gamma}, \\
+    E(t) &= \frac{\bar{\beta}}{k_2 \bar{\alpha} + \gamma}.
+    \end{aligned}
+    $$
+\end{itemize}
+
+\subsubsection{Jacobiano}
+
+Para el jacobiano tenemos que:
+
+$$
+J = 
+\begin{bmatrix}
+\frac{\partial}{\partial N}\left(\frac{dN}{dt}\right) & \frac{\partial}{\partial D}\left(\frac{dN}{dt}\right) \\[8pt]
+\frac{\partial}{\partial N}\left(\frac{dD}{dt}\right) & \frac{\partial}{\partial D}\left(\frac{dD}{dt}\right)
+\end{bmatrix}
+\begin{bmatrix}
+0 & -\gamma & \bar{\alpha} \\[6pt]
+-\gamma & 0 & 0 \\[6pt]
+\frac{\rho k_1 P(t)^2}{K^2} & -\frac{\rho k_2 P(t)^2}{K^2} & \rho - \frac{2\rho P(t)}{K}
+\end{bmatrix}
+$$
+
+donde:
+$
+K = k_1 U(t) - k_2 E(t).
+$
+
+
+\subsubsection{Valores y vectores propios}
+Se debe evaluar el jacobiano en los puntos fijos para posteriormente sacar los valores y vectores propios.
+
+Para
+$
+(U(t)^*, E(t)^*, P(t)^*) = \left(0, \frac{\bar{\beta}}{\gamma}, 0 \right) :
+$
+
+$$
+J = 
+\begin{bmatrix}
+0 & -\gamma & \bar{\alpha} \\[6pt]
+-\gamma & 0 & 0 \\[6pt]
+0 & 0 & \rho
+\end{bmatrix}
+$$
+
+Valores propios:
+
+$$
+\lambda_1 = \rho, \quad \lambda_2 = \gamma, \quad \lambda_3 = -\gamma
+$$
+
+Vectores propios:
+
+$$
+\vec{v}_1 =
+\begin{pmatrix}
+1 \\[6pt]
+-\dfrac{\gamma}{\rho} \\[6pt]
+\dfrac{\rho^2 - \gamma^2}{\rho \bar{\alpha}}
+\end{pmatrix}
+\qquad
+\vec{v}_2 =
+\begin{pmatrix}
+1 \\[6pt]
+-1 \\[6pt]
+0
+\end{pmatrix}
+\qquad
+\vec{v}_3 =
+\begin{pmatrix}
+1 \\[6pt]
+1 \\[6pt]
+0
+\end{pmatrix}
+$$
+
+Para
+$
+(U(t)^*, E(t)^*, P(t)^*) = \left(0, E(t)^*, k_2 E(t)^* \right) :
+$
+
+Dado este punto fijo se tiene 
+$$
+K = -k_2 E(t)^* = -P(t)^* :
+$$
+
+$$
+J = 
+\begin{bmatrix}
+0 & -\gamma & \bar{\alpha} \\[6pt]
+-\gamma & 0 & 0 \\[6pt]
+\rho k_1 & -\rho k_2 & 3\rho
+\end{bmatrix}
+$$
+
+Valores propios:
+
+$$
+\lambda_1 = 3\rho, \quad 
+\lambda_2 = \sqrt{\gamma^2 + \bar{\alpha}\gamma}, \quad 
+\lambda_3 = - \sqrt{\gamma^2 + \bar{\alpha}\gamma}
+$$
+
+Vectores propios:
+
+$$
+\vec{v}_1 =
+\begin{pmatrix}
+0 \\[6pt]
+0 \\[6pt]
+1
+\end{pmatrix}
+\qquad
+\vec{v}_2 =
+\begin{pmatrix}
+1 \\[6pt]
+-\dfrac{\gamma}{\sqrt{\gamma^2 + \bar{\alpha}\gamma}} \\[6pt]
+\dfrac{\gamma}{\sqrt{\gamma^2 + \bar{\alpha}\gamma}}
+\end{pmatrix}
+\qquad
+\vec{v}_3 =
+\begin{pmatrix}
+1 \\[6pt]
+\dfrac{\gamma}{\sqrt{\gamma^2 + \bar{\alpha}\gamma}} \\[6pt]
+-\dfrac{\gamma}{\sqrt{\gamma^2 + \bar{\alpha}\gamma}}
+\end{pmatrix}
+$$
+
+
+\subsubsection{Análisis}
+
+$$
+(U(t)^*, E(t)^*, P(t)^*) = (0, \frac{\beta}{\gamma}, 0) :
+$$
+$$
+\lambda_1 = \rho, \quad \lambda_2 = \gamma, \quad \lambda_3 = -\gamma
+$$
+
+Dadas las diferentes combinaciones posibles con los signos de \( \lambda_1, \lambda_2, \lambda_3 \), se tienen o bien dos valores propios negativos y uno positivo, o dos valores propios positivos y uno negativo. En cualquier caso, el punto en cuestión es un \textbf{punto de silla}.
+
+$$
+(U(t)^*, E(t)^*, P(t)^*) = (0, E(t)^*, k_2 E(t)^*) :
+$$
+$$
+\lambda_1 = 3 \rho, \quad \lambda_2 = \sqrt{\gamma^2 + \bar{\alpha} \gamma}, \quad \lambda_3 = - \sqrt{\gamma^2 + \bar{\alpha} \gamma}
+$$
+
+De manera análoga al punto anterior, en todas las combinaciones posibles de signos se obtienen o bien dos valores propios positivos y uno negativo, o bien dos valores negativos y uno positivo. Por tanto, este punto también es un \textbf{punto de silla}.
+
+Usando los parámetros estimados en la sección siguiente y apoyándonos en las librerías de Julia, podemos hacer una pequeña visualización de este diagrama de fase.
+
+\begin{figure}[H]
+    \centering
+\includegraphics[width=1\textwidth]{img9}
+    \caption{Diagrama de fase para modelo intuitivo de territorio}
+    \label{fig:img9}
+\end{figure}
+
+\subsection{Modelo SIR de territorio}
+
+El modelo simplificado que se tiene es:
+
+\[
+\frac{dD}{dt} = -\alpha D(t)N(t)
+\]
+
+\[
+\frac{dN}{dt} = \alpha D(t)N(t) - \gamma N(t)
+\]
+
+\subsubsection{Puntos fijos}
+
+Al igualar a cero obtenemos el siguiente punto fijo:
+
+\[
+N(t) = 0, \quad D(t) = D
+\]
+
+En este caso, tomamos a \( D(t) \) como una constante.
+
+\subsubsection{Jacobiano}
+
+Para el jacobiano tenemos que:
+
+\[
+J = 
+\begin{bmatrix}
+\frac{\partial}{\partial N}\left(\frac{dN}{dt}\right) & \frac{\partial}{\partial D}\left(\frac{dN}{dt}\right) \\[8pt]
+\frac{\partial}{\partial N}\left(\frac{dD}{dt}\right) & \frac{\partial}{\partial D}\left(\frac{dD}{dt}\right)
+\end{bmatrix}
+\]
+
+\[
+J = 
+\begin{bmatrix}
+\alpha D(t) - \gamma & \alpha N(t) \\[6pt]
+-\alpha D(t) & -\alpha N(t)
+\end{bmatrix}
+\]
+
+\subsubsection{Valores y vectores propios}
+
+Se debe evaluar el jacobiano en el punto fijo para posteriormente calcular los valores y vectores propios.
+
+\[
+(N(t)^*, D(t)^*) = (0, D)
+\]
+
+\[
+J =
+\begin{bmatrix}
+\alpha D - \gamma & 0 \\[6pt]
+-\alpha D & 0
+\end{bmatrix}
+\]
+
+Valores propios:
+
+\[
+\lambda_1 = \alpha D - \gamma, \quad \lambda_2 = 0
+\]
+
+Vectores propios:
+
+\[
+\vec{v}_1 = 
+\begin{pmatrix}
+1 \\[4pt]
+-\dfrac{\alpha D}{\alpha D - \gamma}
+\end{pmatrix},
+\quad
+\vec{v}_2 =
+\begin{pmatrix}
+0 \\[4pt]
+1
+\end{pmatrix}
+\]
+
+\subsubsection{Análisis}
+
+Para el punto fijo \( (N(t)^*, D(t)^*) = (0, D) \):
+
+\[
+\lambda_1 = \alpha D - \gamma, \quad \lambda_2 = 0
+\]
+
+Dado que uno de los valores propios es cero, no hay equilibrios aislados.
+
+Usando los parámetros estimados en la sección siguiente y apoyándonos en las librerías de Julia, podemos realizar una visualización de este diagrama de fase.
+
+\begin{figure}[H]
+    \centering
+\includegraphics[width=1\textwidth]{img19}
+    \caption{Diagrama de Fase: Territorio SIR}
+    \label{fig:img19}
+\end{figure}
+
+
+\subsection{Modelo de Bienestar Urbano (Sección 5.3.3)}
+
+\paragraph{Formulación del subsistema \((P,W)\).}
+En la Sección 5.3.3, el bienestar urbano \(W(t)\) evoluciona según
+\[
+\frac{dW}{dt} \;=\; \alpha_W P(t) + \beta_W\big(U(t)+E(t)\big) + \gamma_W W(t) \;-\; \delta_W F(t),
+\]
+donde \(\alpha_W,\beta_W,\gamma_W,\delta_W\) cuantifican los efectos de cada variable sobre \(W(t)\).
+Para el componente poblacional, previamente se estableció
+\[
+\frac{dP}{dt} \;=\; rP\left(1-\frac{P}{K} \right)
+\]
+donde \( r \) y \( K \) son parámetros de la dinámica poblacional.
+
+A efectos de un retrato de fase 2D y consistente con la disponibilidad de datos promediados anuales, consideramos \(\bar U,\bar E,\bar F\) constantes (promedios/valores de referencia) y definimos \( \bar K = k_1\bar U - k_2\bar E>0 \). El subsistema queda:
+\begin{equation}
+\label{eq:subPW}
+\begin{cases}
+\displaystyle \frac{dP}{dt} \;=\; rP\left(1 - \frac{P}{\bar K}\right),\\[6pt]
+\displaystyle \frac{dW}{dt} \;=\; \gamma_W W \;+\; \underbrace{\big(\alpha_W P + \beta_W(\bar U+\bar E) - \delta_W \bar F\big)}_{=:A(P)}.
+\end{cases}
+\end{equation}
+
+\paragraph{Nulclinas.}
+Del sistema \eqref{eq:subPW}:
+\begin{align*}
+\mathcal{N}_P:\quad & \dot P=0 \;\Longleftrightarrow\; P=0 \;\text{o}\; P=\bar K.\\
+\mathcal{N}_W:\quad & \dot W=0 \;\Longleftrightarrow\; 
+W \;=\; -\frac{1}{\gamma_W}\Big(\alpha_W P + \beta_W(\bar U+\bar E) - \delta_W \bar F\Big).
+\end{align*}
+La nulclina de \(W\) es una recta con pendiente \(-\alpha_W/\gamma_W\) en el plano \((P,W)\); la de \(P\) consta de dos verticales en \(P=0\) y \(P=\bar K\).
+
+\paragraph{Puntos críticos.}
+Las intersecciones de \(\mathcal{N}_P\) y \(\mathcal{N}_W\) producen dos candidatos:
+\[
+(P^\star_0,W^\star_0) \;=\; 
+\left(0,\; -\frac{\beta_W(\bar U+\bar E)-\delta_W\bar F}{\gamma_W}\right), 
+\qquad
+(P^\star_1,W^\star_1) \;=\; 
+\left(\bar K,\; -\frac{\alpha_W \bar K + \beta_W(\bar U+\bar E)-\delta_W\bar F}{\gamma_W}\right).
+\]
+Observación: \(\bar K>0\) requiere \(k_1\bar U>k_2\bar E\) para que la capacidad de carga sea positiva
+:contentReference[oaicite:3]{index=3}.
+
+\paragraph{Linealización y clasificación.}
+El Jacobiano de \eqref{eq:subPW} es
+\[
+J(P,W) \;=\;
+\begin{pmatrix}
+\displaystyle \rho\!\left(1-\frac{2P}{\bar K}\right) & 0\\[6pt]
+\alpha_W & \gamma_W
+\end{pmatrix}.
+\]
+\emph{En \( (P^\star_1,W^\star_1)=(\bar K, \cdots)\):} 
+\(\lambda_1=\rho\!\left(1-\frac{2\bar K}{\bar K}\right)=-\rho<0\) y \(\lambda_2=\gamma_W\).
+\begin{itemize}
+  \item Si \(\gamma_W<0\): ambos autovalores negativos \(\Rightarrow\) \textbf{nodo estable}. El bienestar se estabiliza junto a la población en capacidad de carga.
+  \item Si \(\gamma_W>0\): signos opuestos \(\Rightarrow\) \textbf{punto silla}. El término de “servicios” impulsa \(W\) de forma explosiva si no se compensa con \(F\) o límites en \(\bar U{+}\bar E\).
+\end{itemize}
+\emph{En \( (P^\star_0,W^\star_0)=(0, \cdots)\):} 
+\(\lambda_1=\rho>0\), \(\lambda_2=\gamma_W\). 
+Es inestable si \(\gamma_W\ge 0\), y silla si \(\gamma_W<0\).
+%
+En suma, \(\mathrm{sign}(\gamma_W)\) determina el régimen local del bienestar: \(\gamma_W<0\) (efecto neto disipativo de servicios sobre \(W\)) conduce a estabilidad; \(\gamma_W>0\) induce una inestabilidad en \(W\) (silla en \((\bar K,W^\star_1)\)).
+
+\paragraph{Estructura de campos y trayectorias.}
+Dado que \(\dot P\) no depende de \(W\), las trayectorias tienen componente horizontal determinada por la logística de \(P\) (hacia \(P=\bar K\) si \(P(0)>0\)), mientras la componente vertical depende linealmente de \(W\) y afínmente de \(P\). Por encima (debajo) de \(\mathcal{N}_W\), el campo apunta hacia \(+\hat W\) (\(-\hat W\)). La geometría implica:
+\begin{enumerate}
+  \item Con \(\gamma_W<0\): todas las órbitas con \(P(0)>0\) convergen a una vecindad de \((\bar K,W^\star_1)\).
+  \item Con \(\gamma_W>0\): existen separatrices que emanan de la silla \((\bar K,W^\star_1)\), delimitando cuencas donde \(W\) crece sin acotar salvo que \(A(P)\) sea negativo a lo largo de la evolución (i.e., \(\delta_W \bar F\) suficientemente grande o \(\bar U{+}\bar E\) y/o \(P\) pequeños).
+\end{enumerate}
+
+\paragraph{Lecturas de política y sensibilidad.}
+La posición de la recta \(\mathcal{N}_W\) y el valor de \(W^\star_1\) responden a:
+\[
+W^\star_1 \;=\; -\frac{1}{\gamma_W}\Big(\alpha_W P + \beta_W(\bar U+\bar E) - \delta_W \bar F\Big).
+\]
+\vspace{-0.25em}
+\begin{itemize}
+  \item Incrementar \(\bar U{+}\bar E\) (infraestructura/áreas verdes) baja la nulclina si \(\gamma_W>0\) y la sube si \(\gamma_W<0\). En términos de equilibrio, \(\partial W^\star_1/\partial(\bar U+\bar E) = -\beta_W/\gamma_W\).
+  \item Reducir desigualdad \(\bar F\) desplaza \(\mathcal{N}_W\) hacia abajo si \(\gamma_W>0\), elevando el \(W^\star_1\) efectivo: \(\partial W^\star_1/\partial \bar F = \delta_W/\gamma_W\).
+  \item Aumentar la capacidad de carga \(\bar K\) (vía mayor \(\bar U\) o menor \(\bar E\) en tu formulación) eleva \(P^\star\) y modifica \(W^\star_1\) por el término \(\alpha_W\bar K\)
+  :contentReference[oaicite:4]{index=4}.
+\end{itemize}
+
+\paragraph{Coherencia con el modelo completo.}
+Esta reducción \((P,W)\) es compatible con:
+
+
+
+
+
+
+\section{Implementación del modelo y ajuste de parametros}
+
+A continuación, se presenta la implementación computacional del modelo logístico con migración. Este modelo se programó en el lenguaje \texttt{Julia}, empleando el paquete \texttt{DifferentialEquations.jl} para la resolución numérica de ecuaciones diferenciales ordinarias.
+
+\subsection{Modelo logistico con migración}
+
+En esta sección se implementa el modelo logístico utilizando el sistema de ecuaciones diferenciales que describe la dinámica poblacional. Se resuelven numéricamente las EDOs que incluyen la capacidad de carga \( K \) y la migración \( I(t) \), utilizando la librería \texttt{DifferentialEquations} en Julia. Los resultados se visualizan mediante gráficos que muestran la evolución de la población y su comportamiento en función de los parámetros definidos.
+
+
+\subsubsection{Definición del modelo logístico con migración}
+
+\begin{minted}[fontsize=\small, bgcolor=gray!5, frame=lines, linenos]{julia}
+# Modelo logístico con migración
+function modeloLogistico(du, u, par, t)
+    P = u[1]
+    r, K = par
+    I_t = migracion[Int(round(t))]
+    du[1] = r * P * (1 - P / K) + I_t
+end
+\end{minted}
+
+En este bloque de código se define la ecuación diferencial logística, donde:
+\[
+\frac{dP}{dt} = rP\left(1 - \frac{P}{K}\right) + I_t,
+\]
+con \( P(t) \) como la población, \( r \) la tasa de crecimiento intrínseca, \( K \) la capacidad de carga y \( I_t \) el término de migración correspondiente al año \( t \).
+
+\subsubsection{Definición de las variables de tiempo y población}
+
+El siguiente fragmento de código declara las variables de tiempo, la población observada y los datos de migración que serán utilizados durante el proceso de simulación y ajuste de parámetros.
+
+\begin{minted}[fontsize=\small, bgcolor=gray!5, frame=lines, linenos]{julia}
+begin
+    t_years = df_poblacion.año
+    t0 = minimum(t_years)
+    t_data = Int.(t_years .- t0 .+ 1)
+    años = t_data
+end
+\end{minted}
+
+\subsubsection{Función de error para la optimización}
+
+La función \texttt{residuoLogistico} calcula la diferencia entre los valores simulados del modelo y los datos reales observados, con el fin de minimizar este error mediante un proceso de ajuste de parámetros.
+
+\begin{minted}[fontsize=\small, bgcolor=gray!5, frame=lines, linenos]{julia}
+# Función de error para optimización
+function residuoLogistico(par, pop_obs, tiempo)
+    r, K = par
+    P0 = pop_obs[1]
+    u0 = [P0]
+    tspan = (tiempo[1], tiempo[end])
+    prob = ODEProblem(modeloLogistico, u0, tspan, par)
+    sol = solve(prob, saveat=tiempo)
+
+    # Extraer la solución simulada para cada variable:
+    pop_model = [sol(t)[1] for t in tiempo]
+    res = pop_obs .- pop_model
+    return norm(res)
+end
+\end{minted}
+
+Finalmente, se realiza el ajuste de los parámetros \( r \) y \( K \) mediante la minimización de la norma del residuo, obteniendo así la calibración del modelo con los datos empíricos de población.
+
+\subsubsection{Ajuste de parámetros}
+
+Con el fin de calibrar el modelo, se realiza el ajuste de los parámetros \( r \) (tasa de crecimiento) y \( K \) (capacidad de carga) utilizando los datos observados de población y el método de optimización \texttt{Nelder–Mead}, implementado mediante el paquete \texttt{Optim.jl}.  
+
+\begin{minted}[fontsize=\small, bgcolor=gray!5, frame=lines, linenos]{julia}
+begin
+    # Ajuste de parámetros
+    par_inicial_P = [0.02, 10^7]  # Valores iniciales estimados
+    opt_P = Optim.optimize(par -> residuoLogistico(par, poblacion, años),
+                           par_inicial_P, NelderMead())
+    par_est_P = opt_P.minimizer
+
+    r = par_est_P[1]
+    K = par_est_P[2]
+    println("Parámetros estimados:")
+    println("r = ", r)
+    println("K = ", K)
+end
+\end{minted}
+
+Al ejecutar este bloque de código, se obtienen los valores óptimos de los parámetros \( r \) y \( K \), que permiten representar adecuadamente la dinámica poblacional observada.  
+Por ejemplo, los resultados estimados fueron:
+
+\[
+r = 0.06158, \quad K = 8.5143\times10^6
+\]
+
+\subsubsection{Resolución de la EDO con los parámetros estimados}
+
+Una vez calibrado el modelo, se procede a resolver la ecuación diferencial logística con los parámetros óptimos, utilizando las condiciones iniciales y los datos reales de migración.
+
+\begin{minted}[fontsize=\small, bgcolor=gray!5, frame=lines, linenos]{julia}
+begin
+    # Resolver la ecuación diferencial con los parámetros óptimos
+    P0 = poblacion[1]
+    u0_P = [P0]
+    tspan_P = (años[1], años[end])
+    prob_P = ODEProblem(modeloLogistico, u0_P, tspan_P, par_est_P)
+    sol_P = solve(prob_P, saveat=años, reltol=1e-8)
+
+    function P(t)
+        return sol_P(t)[1]
+    end
+
+    function dP_(t)
+        return r * P(t) * (1 - P(t) / K) + migracion[Int64(round(t))]
+    end
+
+    # Solución analítica del modelo logístico (sin término migratorio)
+    function P_Logistico(t)
+        return (K * P0 * exp(r * t)) / (K + P0 * (exp(r * t) - 1))
+    end
+end
+\end{minted}
+
+Al ejecutar este bloque de código, se resuelve la ecuación diferencial con los parámetros óptimos y se definen las funciones \( P(t) \) y \( dP_(t) \) para su uso posterior.
+
+\subsubsection{Visualización del modelo ajustado}
+
+Finalmente, se puede graficar la población observada y la población modelada para evaluar visualmente el ajuste del modelo logístico a los datos empíricos.
+
+\begin{figure}[H]
+    \centering
+\includegraphics[width=1\textwidth]{img8}
+    \caption{Ajuste de Modelo Logístico con Migración}
+    \label{fig:img8}
+\end{figure}
+
+\subsection{Modelo de población con ecuacuión compensadora}
+
+
+
+
+A continuación se presenta el modelo de crecimiento poblacional implementado en código. Utilizamos una función genérica con un método para definir la tasa de crecimiento poblacional:
+
+\subsubsection{Definición del modelo con ecuación compensadora}
+
+\begin{minted}[frame=single, fontsize=\small, bgcolor=gray!5, linenos]{julia}
+# Modelo de crecimiento poblacional
+function modeloPop(du, u, par, t)
+    P = u[1]
+    b0, m0, i0 = par
+    du[1] = (b0 - m0 + i0) * P
+end
+\end{minted}
+
+\subsubsection*{Función de error para la optimización}
+
+Implementamos la función para calcular el error (residuo) entre el modelo y los datos observados. Esta función calcula el residuo (error) al comparar la población, la vegetación y el entorno modelados con los datos observados.
+
+\begin{minted}[frame=single, fontsize=\small, bgcolor=gray!5, linenos]{julia}
+# Función que calcula el residuo (error) entre el modelo y los datos observados
+function residuoPop(par, pop_obs, tiempo)
+    P0 = pop_obs[1]
+    u0 = [P0]
+    tspan = (tiempo[1], tiempo[end])
+    prob = ODEProblem(modeloPop, u0, tspan, par)
+    sol = solve(prob, saveat=tiempo)
+
+    # Extraer la solución simulada para cada variable:
+    pop_model = [sol(t)[1] for t in tiempo]
+    res = pop_obs .- pop_model
+    return norm(res)
+end
+\end{minted}
+
+\subsubsection*{Función de Optimización}
+
+Aquí se muestra la función de optimización que minimiza el error cuadrático medio (MSE) entre el bienestar urbano simulado y los datos observados. El proceso de optimización se realiza utilizando el algoritmo L-BFGS-B. A continuación, se muestra el bloque de código relevante para este proceso.
+
+\begin{minted}[frame=single, fontsize=\small, bgcolor=gray!5, linenos]{julia}
+from scipy.optimize import minimize
+
+# dWz/dt = a*Pz + bU*Uz + bE*Ez + c*Wz - d*Fz + c0  (dt=1)
+def simulate_W(params):
+    a,bU,bE,c,d,c0 = params
+    out = np.empty(n, float); out[0] = Wz[0]
+    for t in range(n-1):
+        dW = a*Pz[t] + bU*Uz[t] + bE*Ez[t] + c*out[t] - d*Fz[t] + c0
+        out[t+1] = out[t] + dW
+    return out
+
+def objective(params):
+    return np.mean((zunscale(simulate_W(params), W_mu, W_sd) - W)**2)
+
+# OLS sobre incrementos: y = Wz[t+1]-Wz[t] = X beta
+y = Wz[1:] - Wz[:-1]
+X = np.column_stack([Pz[:-1], Uz[:-1], Ez[:-1], Wz[:-1], -Fz[:-1], np.ones(len(y))])
+lam = 1e-6
+beta = np.linalg.solve(X.T@X + lam*np.eye(X.shape[1]), X.T@y)  # [a,bU,bE,c,d,c0]
+initial = [*beta[:-2], beta[-2], beta[-1]]  # mismo orden
+bounds  = [(-3,3), (-3,3), (-3,3), (-2,2), (0,3), (-1,1)]
+res = minimize(objective, initial, method="L-BFGS-B", bounds=bounds)
+
+params_best = res.x if res.fun <= objective(initial) else initial
+a,bU,bE,c,d,c0 = params_best
+\end{minted}
+
+\subsubsection{Exportar parámetros y estadísticos}
+\begin{minted}{python}
+import json, os
+out_dir = PROJECT_ROOT / "Output"; out_dir.mkdir(exist_ok=True, parents=True)
+with open(out_dir / "parametros_estimados.json", "w", encoding="utf-8") as f:
+    json.dump({
+      "parametros": {"a":float(a),"bU":float(bU),"bE":float(bE),
+                     "c":float(c),"d":float(d),"c0":float(c0)},
+      "normalizacion": {
+        "P":{"mu":float(P_mu),"sd":float(P_sd)},
+        "U":{"mu":float(U_mu),"sd":float(U_sd)},
+        "E":{"mu":float(E_mu),"sd":float(E_sd)},
+        "W":{"mu":float(W_mu),"sd":float(W_sd)},
+        "F":{"mu":float(F_mu),"sd":float(F_sd)}
+      },
+      "anio_inicio": int(t_years[0]), "anio_fin": int(t_years[-1])
+    }, f, indent=2, ensure_ascii=False)
+\end{minted}
+
+\subsubsection{Proyección a 5 años usando los parámetros guardados}
+\begin{minted}{python}
+# Cargar parámetros
+with open(out_dir / "parametros_estimados.json","r",encoding="utf-8") as f:
+    p = json.load(f)
+a,bU,bE,c,d,c0 = (p["parametros"][k] for k in ["a","bU","bE","c","d","c0"])
+P_mu,P_sd = p["normalizacion"]["P"]["mu"], p["normalizacion"]["P"]["sd"]
+U_mu,U_sd = p["normalizacion"]["U"]["mu"], p["normalizacion"]["U"]["sd"]
+E_mu,E_sd = p["normalizacion"]["E"]["mu"], p["normalizacion"]["E"]["sd"]
+W_mu,W_sd = p["normalizacion"]["W"]["mu"], p["normalizacion"]["W"]["sd"]
+F_mu,F_sd = p["normalizacion"]["F"]["mu"], p["normalizacion"]["F"]["sd"]
+
+# Extender series (extrapolación constante) y normalizar
+n_future = 5
+years_full = np.arange(t_years[0], t_years[-1] + n_future + 1, dtype=int)
+def extend(x, m): y=np.empty(m); y[:len(x)] = x; y[len(x):]=x[-1]; return y
+Pz_ext = (extend(P,len(years_full)) - P_mu) / P_sd
+Uz_ext = (extend(U,len(years_full)) - U_mu) / U_sd
+Ez_ext = (extend(E,len(years_full)) - E_mu) / E_sd
+Fz_ext = (extend(F,len(years_full)) - F_mu) / F_sd
+
+# Simulación discreta (Euler) coherente con la estimación
+def simulate_ext(params, Pz,Uz,Ez,Fz, W0z):
+    a,bU,bE,c,d,c0 = params
+    n = len(Pz); Wz = np.empty(n); Wz[0] = W0z
+    for t in range(n-1):
+        dW = a*Pz[t] + bU*Uz[t] + bE*Ez[t] + c*Wz[t] - d*Fz[t] + c0
+        Wz[t+1] = Wz[t] + dW
+    return Wz
+
+Wz_ext = simulate_ext((a,bU,bE,c,d,c0), Pz_ext,Uz_ext,Ez_ext,Fz_ext, Wz[0])
+W_ext  = Wz_ext*W_sd + W_mu
+\end{minted}
+
+
+
+
+
+
+
+
+
+
+
+
